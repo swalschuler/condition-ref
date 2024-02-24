@@ -1,9 +1,9 @@
 {
-  "name": "Hello, World!",
+  "name": "5e Condition Reference",
   "version": "1.0.0",
   "manifest_version": 1,
   "action": {
-    "title": "Hello, World!",
+    "title": "5e Condition Reference",
     "icon": "/icon.svg",
     "popover": "/",
     "height": 600,
