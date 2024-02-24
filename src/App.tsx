@@ -86,7 +86,7 @@ function App() {
     <MantineProvider>
       <AppShell>
         <AppShell.Header className="header" px={"md"}>
-          <Title order={3}>Condition Reference</Title>
+          <Title order={3}>5e Condition Reference</Title>
         </AppShell.Header>
         <AppShell.Main>
           <List displayedConditions={conditions} />

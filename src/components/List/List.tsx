@@ -1,21 +1,8 @@
-import {
-  Stack,
-  Text,
-  Card,
-  Group,
-  Title,
-  ActionIcon,
-  Divider,
-  Space,
-  Tooltip,
-} from "@mantine/core";
-
-import { IconCopy, IconCopyCheck, IconPin } from "@tabler/icons-react";
+import { Stack, Text, Card, Group, Divider, Space } from "@mantine/core";
 
 import "./List.css";
 import ConditionName from "../../utils/conditionTypes";
 import conditionData from "../../utils/conditionData";
-import { useClipboard } from "@mantine/hooks";
 import LinkCopyButton from "../LinkCopyButton";
 
 function capitalizeFirstLetter(str: string) {
@@ -27,8 +14,6 @@ const List = ({
 }: {
   displayedConditions: ConditionName[];
 }) => {
-  const clipboard = useClipboard();
-
   const dataToShow = conditionData.filter((condition) =>
     displayedConditions.includes(condition.name)
   );
