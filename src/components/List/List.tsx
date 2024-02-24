@@ -1,5 +1,4 @@
-import { Stack, Text, Card, Group, Divider, Space } from "@mantine/core";
-
+import { Stack, Text, Card, Group, Divider } from "@mantine/core";
 import "./List.css";
 import ConditionName from "../../utils/conditionTypes";
 import conditionData from "../../utils/conditionData";
@@ -9,7 +8,7 @@ function capitalizeFirstLetter(str: string) {
   return str.charAt(0).toUpperCase() + str.slice(1);
 }
 
-const List = ({
+const ConditionList = ({
   displayedConditions,
 }: {
   displayedConditions: ConditionName[];
@@ -38,10 +37,9 @@ const List = ({
 
   return (
     <Stack gap={"sm"} bg="var(--mantine-color-body)" justify="flex-start">
-      <Space my="xs" />
       {cards}
     </Stack>
   );
 };
 
-export default List;
+export default ConditionList;
