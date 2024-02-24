@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import "./App.css";
-import OBR from "@owlbear-rodeo/sdk";
+import OBR, { Item } from "@owlbear-rodeo/sdk";
 import List from "./components/List/List";
 import "./index.css";
 import "./App.css";
@@ -30,33 +30,57 @@ const CONDITION_ATTACHMENT_NAMES: { [key: string]: ConditionName } = {
   unconscious: "unconscious",
 };
 
+const updateConditions = (
+  items: Item[],
+  setConditions: React.Dispatch<React.SetStateAction<ConditionName[]>>
+) => {
+  const usedConditions: ConditionName[] = [];
+
+  // Could maybe optimize by filtering as I go
+  for (const item of items) {
+    if (CONDITION_ATTACHMENT_NAMES.hasOwnProperty(item.name.toLowerCase())) {
+      usedConditions.push(
+        CONDITION_ATTACHMENT_NAMES[item.name.toLocaleLowerCase()]
+      );
+    }
+  }
+
+  const uniqueConditions = usedConditions.filter(
+    (value, index, array) => array.indexOf(value) === index
+  );
+
+  setConditions(uniqueConditions);
+};
+
 function App() {
   const [conditions, setConditions] = useState<ConditionName[]>([]);
 
-  useEffect(
-    () =>
-      OBR.scene.items.onChange((items) => {
-        const usedConditions: ConditionName[] = [];
+  const [ready, setReady] = useState(false);
+  useEffect(() => {
+    OBR.onReady(() => {
+      setReady(true);
+    });
+  }, []);
 
-        // Could maybe optimize by filtering as I go
-        for (const item of items) {
-          if (
-            CONDITION_ATTACHMENT_NAMES.hasOwnProperty(item.name.toLowerCase())
-          ) {
-            usedConditions.push(
-              CONDITION_ATTACHMENT_NAMES[item.name.toLocaleLowerCase()]
-            );
-          }
-        }
+  const [sceneReady, setSceneReady] = useState(false);
+  useEffect(() => {
+    if (ready) {
+      return OBR.scene.onReadyChange((isReady) => {
+        setSceneReady(isReady);
+      });
+    }
+  }, [ready]);
 
-        const uniqueConditions = usedConditions.filter(
-          (value, index, array) => array.indexOf(value) === index
-        );
-
-        setConditions(uniqueConditions);
-      }),
-    []
-  );
+  useEffect(() => {
+    if (sceneReady) {
+      OBR.scene.items
+        .getItems()
+        .then((items) => updateConditions(items, setConditions));
+      OBR.scene.items.onChange((items) =>
+        updateConditions(items, setConditions)
+      );
+    }
+  }, [sceneReady]);
 
   return (
     <MantineProvider>

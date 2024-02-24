@@ -46,7 +46,7 @@ const List = ({
       <Card key={cond.name} shadow="sm" padding="sm" radius="sm" withBorder>
         <Group justify="space-between" mt="sm" mb="xs">
           <Text fw={500}>{capitalizeFirstLetter(cond.name)}</Text>
-          <LinkCopyButton />
+          <LinkCopyButton url={cond.url} />
         </Group>
         {effects}
       </Card>
