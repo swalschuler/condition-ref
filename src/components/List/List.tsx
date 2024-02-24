@@ -22,6 +22,11 @@ import { IconAdjustments, IconPin } from "@tabler/icons-react";
 
 import ConditionCard from "../ConditionCard";
 import "./List.css";
+import { ConditionName } from "../../types/conditionTypes";
+
+function capitalizeFirstLetter(str: string) {
+  return str.charAt(0).toUpperCase() + str.slice(1);
+}
 
 const clickTest = () => {
   const rich = [
@@ -56,9 +61,9 @@ const clickTest = () => {
   OBR.scene.items.addItems([item, text]);
 };
 
-const data = [
+const data: { name: ConditionName; conditionEffects: string[] }[] = [
   {
-    name: "Blinded",
+    name: "blinded",
     conditionEffects: [
       "You automatically fail any ability check which requires sight.",
       "You have disadvantage on attack rolls.",
@@ -66,7 +71,7 @@ const data = [
     ],
   },
   {
-    name: "Blinded2",
+    name: "exhaustion",
     conditionEffects: [
       "You automatically fail any ability check which requires sight.",
       "You have disadvantage on attack rolls.",
@@ -75,8 +80,16 @@ const data = [
   },
 ];
 
-const List = () => {
-  const cards = data.map((cond) => {
+const List = ({
+  displayedConditions,
+}: {
+  displayedConditions: ConditionName[];
+}) => {
+  const dataToShow = data.filter((condition) =>
+    displayedConditions.includes(condition.name)
+  );
+
+  const cards = dataToShow.map((cond) => {
     const effects = cond.conditionEffects.map((effect, i) => (
       <div key={`${cond.name}-${i}`}>
         <Text size="sm" c="dimmed">
@@ -88,7 +101,7 @@ const List = () => {
     return (
       <Card key={cond.name} shadow="sm" padding="lg" radius="md" withBorder>
         <Group justify="space-between" mt="md" mb="xs">
-          <Text fw={500}>{cond.name}</Text>
+          <Text fw={500}>{capitalizeFirstLetter(cond.name)}</Text>
           <ActionIcon variant="default" aria-label="Pin" onClick={clickTest}>
             <IconPin style={{ width: "70%", height: "70%" }} stroke={1.5} />
           </ActionIcon>
