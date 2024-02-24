@@ -20,7 +20,7 @@ const CONDITION_ATTACHMENT_NAMES: { [key: string]: ConditionName } = {
   "condition marker - charmed": "charmed",
 
   deafened: "deafened",
-  "condition marker - deafened": "bldeafenedinded",
+  "condition marker - deafened": "deafened",
 
   exhaustion: "exhaustion",
   "condition marker - exhaustion": "exhaustion",
@@ -94,8 +94,11 @@ function App() {
   const [sceneReady, setSceneReady] = useState(false);
   useEffect(() => {
     if (ready) {
-      return OBR.scene.onReadyChange((isReady) => {
+      OBR.scene.isReady().then((isReady) => {
         setSceneReady(isReady);
+        OBR.scene.onReadyChange((isReady) => {
+          setSceneReady(isReady);
+        });
       });
     }
   }, [ready]);
@@ -115,7 +118,9 @@ function App() {
     <MantineProvider>
       <AppShell>
         <AppShell.Header className="header" px={"md"}>
-          <Title order={3}>5e Condition Reference</Title>
+          <Title style={{ margin: "3px" }} order={3}>
+            5e Condition Reference
+          </Title>
         </AppShell.Header>
         <AppShell.Main>
           <List displayedConditions={conditions} />

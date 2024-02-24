@@ -21,9 +21,7 @@ const List = ({
   const cards = dataToShow.map((cond) => {
     const effects = cond.conditionEffects.map((effect, i) => (
       <div key={`${cond.name}-${i}`}>
-        <Text size="sm" c="dimmed">
-          {effect}
-        </Text>
+        <Text size="sm">{effect}</Text>
         {i < cond.conditionEffects.length - 1 ? <Divider my="sm" /> : null}
       </div>
     ));
@@ -39,12 +37,7 @@ const List = ({
   });
 
   return (
-    <Stack
-      h={"100vh"}
-      gap={"sm"}
-      bg="var(--mantine-color-body)"
-      justify="flex-start"
-    >
+    <Stack gap={"sm"} bg="var(--mantine-color-body)" justify="flex-start">
       <Space my="xs" />
       {cards}
     </Stack>
