@@ -1,4 +1,4 @@
-export type ConditionName =
+type ConditionName =
   | "blinded"
   | "charmed"
   | "deafened"
@@ -14,3 +14,5 @@ export type ConditionName =
   | "restrained"
   | "stunned"
   | "unconscious";
+
+export default ConditionName;

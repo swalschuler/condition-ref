@@ -3,12 +3,13 @@ import "./App.css";
 import OBR from "@owlbear-rodeo/sdk";
 import List from "./components/List/List";
 import "./index.css";
-import { ConditionName } from "./types/conditionTypes";
+import "./App.css";
+import ConditionName from "./utils/conditionTypes";
 
 // Import styles of packages that you've installed.
 // All packages except `@mantine/hooks` require styles imports
 import "@mantine/core/styles.css";
-import { MantineProvider } from "@mantine/core";
+import { AppShell, MantineProvider, Title } from "@mantine/core";
 
 // Map file names to 5e conditions
 const CONDITION_ATTACHMENT_NAMES: { [key: string]: ConditionName } = {
@@ -58,11 +59,16 @@ function App() {
   );
 
   return (
-    <>
-      <MantineProvider>
-        <List displayedConditions={conditions} />
-      </MantineProvider>
-    </>
+    <MantineProvider>
+      <AppShell>
+        <AppShell.Header className="header" px={"md"}>
+          <Title order={3}>Condition Reference</Title>
+        </AppShell.Header>
+        <AppShell.Main>
+          <List displayedConditions={conditions} />
+        </AppShell.Main>
+      </AppShell>
+    </MantineProvider>
   );
 }
 
