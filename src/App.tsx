@@ -6,10 +6,64 @@ import "./index.css";
 import "./App.css";
 import ConditionName from "./utils/conditionTypes";
 
+import { useDisclosure } from "@mantine/hooks";
+import {
+  Drawer,
+  Button,
+  Burger,
+  Text,
+  ScrollArea,
+  Flex,
+  ActionIcon,
+  CloseButton,
+} from "@mantine/core";
+
+function Demo({ opened, close }: { opened: boolean; close: () => void }) {
+  return (
+    <>
+      <Drawer
+        opened={opened}
+        onClose={close}
+        title={<Title order={3}>Text</Title>}
+        position="right"
+        scrollAreaComponent={ScrollArea.Autosize}
+      >
+        <Text>Boo!</Text>
+        <Text>Hi</Text>
+        <Text>Hi</Text>
+        <Text>Hi</Text>
+        <Text>Hi</Text>
+        <Text>Hi</Text>
+        <Text>Hi</Text>
+        <Text>Hi</Text>
+        <Text>Hi</Text>
+        <Text>Hi</Text>
+        <Text>Hi</Text>
+        <Text>Hi</Text>
+        <Text>Hi</Text>
+        <Text>Hi</Text>
+        <Text>Hi</Text>
+        <Text>Hi</Text>
+        <Text>Hi</Text>
+        <Text>Hi</Text>
+        <Text>Hi</Text>
+        <Text>Hi</Text>
+        <Text>Hi</Text>
+        <Text>Hi</Text>
+        <Text>Hi</Text>
+        <Text>Hi</Text>
+        <Text>Hi</Text>
+        <Text>Hi</Text>
+      </Drawer>
+    </>
+  );
+}
+
 // Import styles of packages that you've installed.
 // All packages except `@mantine/hooks` require styles imports
 import "@mantine/core/styles.css";
 import { AppShell, MantineProvider, Title } from "@mantine/core";
+import { IconSettings } from "@tabler/icons-react";
 
 // Map file names to 5e conditions
 const CONDITION_ATTACHMENT_NAMES: { [key: string]: ConditionName } = {
@@ -83,6 +137,7 @@ const updateConditions = (
 
 function App() {
   const [conditions, setConditions] = useState<ConditionName[]>([]);
+  const [opened, { open, close }] = useDisclosure(false);
 
   const [ready, setReady] = useState(false);
   useEffect(() => {
@@ -116,13 +171,36 @@ function App() {
 
   return (
     <MantineProvider>
-      <AppShell>
-        <AppShell.Header className="header" px={"md"}>
-          <Title style={{ margin: "3px" }} order={3}>
-            5e Condition Reference
-          </Title>
+      <AppShell header={{ height: "40px" }}>
+        <AppShell.Header px={"md"}>
+          <Flex
+            direction="row"
+            align={"center"}
+            justify={"space-between"}
+            style={{ width: "100%", height: "100%" }}
+          >
+            {/* <Title style={{ margin: "3px" }} order={3}> */}
+            <Title order={3}>5e Condition Reference</Title>
+            {/* <ActionIcon variant="filled" aria-label="Settings" onClick={open}>
+              <IconSettings
+                style={{ width: "70%", height: "70%" }}
+                stroke={1.5}
+              />
+            </ActionIcon> */}
+            <CloseButton
+              icon={
+                <IconSettings
+                  style={{ width: "70%", height: "70%" }}
+                  stroke={1.5}
+                />
+              }
+              aria-label="Settings"
+              onClick={open}
+            />
+          </Flex>
         </AppShell.Header>
         <AppShell.Main>
+          <Demo opened={opened} close={close} />
           <List displayedConditions={conditions} />
         </AppShell.Main>
       </AppShell>

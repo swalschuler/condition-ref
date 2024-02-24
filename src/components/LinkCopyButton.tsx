@@ -8,7 +8,7 @@ const LinkCopyButton = ({ url }: { url: string }) => {
   return (
     <ActionIcon
       variant="default"
-      aria-label="Pin"
+      aria-label="Copy"
       onClick={() => clipboard.copy(url)}
     >
       {clipboard.copied ? (
