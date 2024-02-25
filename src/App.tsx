@@ -43,6 +43,9 @@ const updateConditions = (
 function App() {
   const [conditions, setConditions] = useState<ConditionName[]>([]);
   const [opened, { open, close }] = useDisclosure(false);
+  const [checkedRings, setCheckedRings] = useState(false);
+  const [checkedConditionMarkers, setCheckedConditionMarkers] = useState(false);
+  const [jsonValue, setJsonValue] = useState("");
 
   const [ready, setReady] = useState(false);
   useEffect(() => {
@@ -97,7 +100,16 @@ function App() {
               onClick={open}
             />
           </Flex>
-          <Settings opened={opened} close={close} />
+          <Settings
+            opened={opened}
+            close={close}
+            checkedRings={checkedRings}
+            setCheckedRings={setCheckedRings}
+            checkedConditionMarkers={checkedConditionMarkers}
+            setCheckedConditionMarkers={setCheckedConditionMarkers}
+            jsonValue={jsonValue}
+            setJsonValue={setJsonValue}
+          />
         </AppShell.Header>
         <AppShell.Main>
           <ConditionList displayedConditions={conditions} />

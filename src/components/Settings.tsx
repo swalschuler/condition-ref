@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { Dispatch, SetStateAction } from "react";
 import {
   Drawer,
   Title,
@@ -21,14 +21,22 @@ const updateMetaData = (state: MetaData) => {
 const Settings = ({
   opened,
   close,
+  checkedRings,
+  setCheckedRings,
+  checkedConditionMarkers,
+  setCheckedConditionMarkers,
+  jsonValue,
+  setJsonValue,
 }: {
   opened: boolean;
   close: () => void;
+  checkedRings: boolean;
+  setCheckedRings: Dispatch<SetStateAction<boolean>>;
+  checkedConditionMarkers: boolean;
+  setCheckedConditionMarkers: Dispatch<SetStateAction<boolean>>;
+  jsonValue: string;
+  setJsonValue: Dispatch<SetStateAction<string>>;
 }) => {
-  const [checkedRings, setCheckedRings] = useState(false);
-  const [checkedConditionMarkers, setCheckedConditionMarkers] = useState(false);
-  const [jsonValue, setJsonValue] = useState("");
-
   const isJsonValid = validateJson(jsonValue, JSON.parse);
 
   const state = {
