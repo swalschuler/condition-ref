@@ -1,6 +1,5 @@
 import { Stack, Text, Card, Group, Divider, ActionIcon } from "@mantine/core";
 import "./List.css";
-import ConditionName from "../../utils/conditionTypes";
 import conditionData from "../../utils/conditionData";
 import { IconExternalLink } from "@tabler/icons-react";
 
@@ -11,7 +10,7 @@ function capitalizeFirstLetter(str: string) {
 const ConditionList = ({
   displayedConditions,
 }: {
-  displayedConditions: ConditionName[];
+  displayedConditions: string[];
 }) => {
   const dataToShow = conditionData.filter((condition) =>
     displayedConditions.includes(condition.name)

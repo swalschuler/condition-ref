@@ -1,7 +1,5 @@
-import ConditionName from "./conditionTypes";
-
 const conditionData: {
-  name: ConditionName;
+  name: string;
   url: string;
   conditionEffects: string[];
 }[] = [

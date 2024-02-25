@@ -15,9 +15,7 @@ import OBR from "@owlbear-rodeo/sdk";
 const METADATA_ID = "net.upperatmosphere/metadata";
 
 const updateMetaData = (state: MetaData) => {
-  OBR.room
-    .setMetadata({ [METADATA_ID]: { ...state } })
-    .then(() => console.log("DONE"));
+  OBR.room.setMetadata({ [METADATA_ID]: { ...state } });
 };
 
 const Settings = ({
