@@ -1,4 +1,4 @@
-const conditionData: {
+const CONDITION_DATA: {
   name: string;
   url: string;
   conditionEffects: string[];
@@ -145,4 +145,4 @@ const conditionData: {
   },
 ];
 
-export default conditionData;
+export default CONDITION_DATA;

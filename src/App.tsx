@@ -20,6 +20,7 @@ import {
 import Settings from "./components/Settings";
 import ConditionList from "./components/List/List";
 import { InputJson } from "./utils/validateJson";
+import CONDITION_DATA from "./utils/conditionData";
 
 function App() {
   const [conditions, setConditions] = useState<string[]>([]);
@@ -30,7 +31,9 @@ function App() {
   const [fileToNameMap, setFileToNameMap] = useState<{
     [key: string]: string;
   }>({});
-  const [conditionData, setConditionData] = useState();
+  const [conditionData, setConditionData] = useState<
+    { name: string; url: string; conditionEffects: string[] }[]
+  >([]);
   const [itemsLocal, setItemsLocal] = useState<Item[]>([]);
 
   const [ready, setReady] = useState(false);
@@ -62,7 +65,7 @@ function App() {
       name: string;
       url: string;
       conditionEffects: string[];
-    }[] = [];
+    }[] = [...CONDITION_DATA];
 
     let checkedRings = true;
     if (!!data[METADATA_ID]) {
@@ -103,6 +106,7 @@ function App() {
     });
 
     setFileToNameMap(fileToName);
+    setConditionData(fullConditionData);
   };
 
   const updateConditions = () => {
@@ -162,7 +166,10 @@ function App() {
           </Flex>
         </AppShell.Header>
         <AppShell.Main>
-          <ConditionList displayedConditions={conditions} />
+          <ConditionList
+            displayedConditions={conditions}
+            conditionData={conditionData}
+          />
           <Settings
             opened={opened}
             close={close}

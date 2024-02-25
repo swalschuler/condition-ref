@@ -9,8 +9,10 @@ function capitalizeFirstLetter(str: string) {
 
 const ConditionList = ({
   displayedConditions,
+  conditionData,
 }: {
   displayedConditions: string[];
+  conditionData: { name: string; url: string; conditionEffects: string[] }[];
 }) => {
   const dataToShow = conditionData.filter((condition) =>
     displayedConditions.includes(condition.name)
