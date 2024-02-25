@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import "./App.css";
-import OBR, { Item } from "@owlbear-rodeo/sdk";
+import OBR, { Item, Metadata } from "@owlbear-rodeo/sdk";
 import "./index.css";
 import "./App.css";
 import "@mantine/core/styles.css";
@@ -17,6 +17,7 @@ import ConditionName from "./utils/conditionTypes";
 import CONDITION_ATTACHMENT_NAMES from "./utils/fileToConditionMapData";
 import Settings from "./components/Settings";
 import ConditionList from "./components/List/List";
+import { MetaData } from "./utils/validateJson";
 
 const updateConditions = (
   items: Item[],
@@ -66,6 +67,19 @@ function App() {
     }
   }, [ready]);
 
+  const METADATA_ID = "net.upperatmosphere/metadata";
+
+  const parseMetaData = (data: Metadata) => {
+    console.log(`parsing: ${data}`);
+    console.log(data);
+    console.log(`OKEAY: ${!!(data[METADATA_ID] as MetaData)?.checkedRings}`);
+    setCheckedRings(!!(data[METADATA_ID] as MetaData)?.checkedRings);
+    setCheckedConditionMarkers(
+      !!(data[METADATA_ID] as MetaData)?.checkedConditionMarkers
+    );
+    setJsonValue((data[METADATA_ID] as MetaData)?.json || "");
+  };
+
   useEffect(() => {
     if (sceneReady) {
       OBR.scene.items
@@ -74,7 +88,9 @@ function App() {
       OBR.scene.items.onChange((items) =>
         updateConditions(items, setConditions)
       );
-      OBR.room.onMetadataChange((data) => console.log(data));
+      console.log("HELLO");
+      OBR.room.getMetadata().then((data) => parseMetaData(data));
+      OBR.room.onMetadataChange((data) => parseMetaData(data));
     }
   }, [sceneReady]);
 

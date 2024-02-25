@@ -15,7 +15,9 @@ import OBR from "@owlbear-rodeo/sdk";
 const METADATA_ID = "net.upperatmosphere/metadata";
 
 const updateMetaData = (state: MetaData) => {
-  OBR.room.setMetadata({ [METADATA_ID]: { ...state } });
+  OBR.room
+    .setMetadata({ [METADATA_ID]: { ...state } })
+    .then(() => console.log("DONE"));
 };
 
 const Settings = ({
@@ -72,15 +74,20 @@ const Settings = ({
           <Group>
             <Checkbox
               checked={checkedRings}
-              onChange={(event) => setCheckedRings(event.currentTarget.checked)}
+              onClick={() =>
+                updateMetaData({ ...state, checkedRings: !checkedRings })
+              }
             />
             Default Rings
           </Group>
           <Group>
             <Checkbox
               checked={checkedConditionMarkers}
-              onChange={(event) =>
-                setCheckedConditionMarkers(event.currentTarget.checked)
+              onChange={() =>
+                updateMetaData({
+                  ...state,
+                  checkedConditionMarkers: !checkedConditionMarkers,
+                })
               }
             />
             Condition Markers
