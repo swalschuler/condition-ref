@@ -7,7 +7,9 @@ import {
   Divider,
   JsonInput,
   Group,
+  Button,
 } from "@mantine/core";
+import validateJson from "../utils/validateJson";
 
 const Settings = ({
   opened,
@@ -19,6 +21,8 @@ const Settings = ({
   const [checkedRings, setCheckedRings] = useState(false);
   const [checkedConditionMarkers, setCheckedConditionMarkers] = useState(false);
   const [jsonValue, setJsonValue] = useState("");
+
+  const isJsonValid = validateJson(jsonValue, JSON.parse);
 
   return (
     <Drawer.Root
@@ -73,6 +77,11 @@ const Settings = ({
             value={jsonValue}
             onChange={setJsonValue}
           />
+          <Group justify="flex-end" mt="md">
+            <Button type="submit" disabled={!isJsonValid}>
+              Save
+            </Button>
+          </Group>
         </Drawer.Body>
       </Drawer.Content>
     </Drawer.Root>
