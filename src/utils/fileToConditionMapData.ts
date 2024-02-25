@@ -24,7 +24,7 @@ export const CONDITION_ATTACHMENTS_MARKERS: { [key: string]: string } = {
   "condition marker - blinded": "blinded",
   "condition marker - charmed": "charmed",
   "condition marker - deafened": "deafened",
-  "condition marker - exhaustion": "exhaustion",
+  "condition marker - exhausted": "exhaustion",
   "condition marker - frightened": "frightened",
   "condition marker - grappled": "grappled",
   "condition marker - incapacitated": "incapacitated",

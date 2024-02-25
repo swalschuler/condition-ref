@@ -90,9 +90,6 @@ function App() {
       ...(checkedConditionMarkers && CONDITION_ATTACHMENTS_MARKERS),
     };
 
-    console.log("FILE TO NAME!");
-    console.log(fileToName);
-
     const json = JSON.parse(jsonString || "[]") as InputJson;
 
     json.map((entry) => {
@@ -105,20 +102,16 @@ function App() {
       fileToName[entry.fileName] = entry.title;
     });
 
-    console.log("Setging");
-    console.log(fileToName);
-
     setFileToNameMap(fileToName);
   };
 
-  const updateConditions = (
-    items: Item[],
-    fileToNameMap: { [key: string]: string }
-  ) => {
+  const updateConditions = () => {
+    console.log("updating");
+
     const usedConditions: string[] = [];
 
     // Could maybe optimize by filtering as I go
-    for (const item of items) {
+    for (const item of itemsLocal) {
       if (fileToNameMap.hasOwnProperty(item.name.toLowerCase())) {
         usedConditions.push(fileToNameMap[item.name.toLocaleLowerCase()]);
       }
@@ -131,19 +124,20 @@ function App() {
     setConditions(uniqueConditions);
   };
 
+  useEffect(updateConditions, [itemsLocal, fileToNameMap]);
+
   useEffect(() => {
     if (sceneReady) {
       OBR.scene.items.getItems().then((items) => {
-        // setItemsLocal(items);
-        updateConditions(items, fileToNameMap);
+        setItemsLocal(items);
       });
       OBR.scene.items.onChange((items) => {
-        // setItemsLocal(items);
-        updateConditions(items, fileToNameMap);
+        setItemsLocal(items);
       });
     }
   }, [sceneReady]);
 
+  console.log(fileToNameMap);
   return (
     <MantineProvider>
       <AppShell header={{ height: "40px" }}>
