@@ -21,9 +21,9 @@ export default function validateJson(
 export type InputJson = {
   fileName: string;
   title: string;
-  url?: string | undefined;
+  url: string | undefined;
   conditionEffects: string[];
-};
+}[];
 
 export type MetaData = {
   checkedRings: boolean;
@@ -32,26 +32,29 @@ export type MetaData = {
 };
 
 const schema: JSONSchemaType<InputJson> = {
-  type: "object",
-  properties: {
-    fileName: {
-      type: "string",
-    },
-    title: {
-      type: "string",
-    },
-    url: {
-      type: "string",
-      nullable: true,
-    },
-    conditionEffects: {
-      type: "array",
-      items: {
+  type: "array",
+  items: {
+    type: "object",
+    properties: {
+      fileName: {
         type: "string",
       },
+      title: {
+        type: "string",
+      },
+      url: {
+        type: "string",
+        nullable: true,
+      },
+      conditionEffects: {
+        type: "array",
+        items: {
+          type: "string",
+        },
+      },
     },
+    required: ["fileName", "title", "conditionEffects"],
   },
-  required: ["fileName", "title", "conditionEffects"],
 };
 
 const inputSchemaValidator = ajv.compile(schema);
