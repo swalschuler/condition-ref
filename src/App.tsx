@@ -17,7 +17,7 @@ import ConditionName from "./utils/conditionTypes";
 import CONDITION_ATTACHMENT_NAMES from "./utils/fileToConditionMapData";
 import Settings from "./components/Settings";
 import ConditionList from "./components/List/List";
-import { MetaData } from "./utils/validateJson";
+import { InputJson, MetaData } from "./utils/validateJson";
 
 const updateConditions = (
   items: Item[],
@@ -70,14 +70,25 @@ function App() {
   const METADATA_ID = "net.upperatmosphere/metadata";
 
   const parseMetaData = (data: Metadata) => {
-    console.log(`parsing: ${data}`);
-    console.log(data);
-    console.log(`OKEAY: ${!!(data[METADATA_ID] as MetaData)?.checkedRings}`);
-    setCheckedRings(!!(data[METADATA_ID] as MetaData)?.checkedRings);
-    setCheckedConditionMarkers(
-      !!(data[METADATA_ID] as MetaData)?.checkedConditionMarkers
-    );
-    setJsonValue((data[METADATA_ID] as MetaData)?.json || "");
+    const checkedRings = !!(data[METADATA_ID] as MetaData)?.checkedRings;
+    const checkedConditionMarkers = !!(data[METADATA_ID] as MetaData)
+      ?.checkedConditionMarkers;
+    const jsonString = (data[METADATA_ID] as MetaData)?.json || "";
+
+    setCheckedRings(checkedRings);
+    setCheckedConditionMarkers(checkedConditionMarkers);
+    setJsonValue(jsonString);
+
+    const json = JSON.parse(jsonString) as InputJson;
+
+    json.map((entry) => {
+      const fileNameToTitle = { [entry.fileName]: entry.title };
+      const dataEntry = {
+        name: entry.title,
+        url: entry?.url || "",
+        conditionEffects: entry.conditionEffects,
+      };
+    });
   };
 
   useEffect(() => {
@@ -88,7 +99,7 @@ function App() {
       OBR.scene.items.onChange((items) =>
         updateConditions(items, setConditions)
       );
-      console.log("HELLO");
+
       OBR.room.getMetadata().then((data) => parseMetaData(data));
       OBR.room.onMetadataChange((data) => parseMetaData(data));
     }

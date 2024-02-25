@@ -24,9 +24,7 @@ const Settings = ({
   opened,
   close,
   checkedRings,
-  setCheckedRings,
   checkedConditionMarkers,
-  setCheckedConditionMarkers,
   jsonValue,
   setJsonValue,
 }: {
@@ -74,7 +72,7 @@ const Settings = ({
           <Group>
             <Checkbox
               checked={checkedRings}
-              onClick={() =>
+              onChange={() =>
                 updateMetaData({ ...state, checkedRings: !checkedRings })
               }
             />
