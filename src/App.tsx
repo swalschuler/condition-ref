@@ -10,6 +10,9 @@ import {
   AppShell,
   MantineProvider,
   Title,
+  Center,
+  Image,
+  Stack,
 } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import { IconSettings } from "@tabler/icons-react";
@@ -103,10 +106,19 @@ function App() {
           </Flex>
         </AppShell.Header>
         <AppShell.Main mih={"100%"}>
-          <ConditionList
-            displayedConditions={conditions}
-            conditionData={conditionData}
-          />
+          {conditions.length > 0 ? (
+            <ConditionList
+              displayedConditions={conditions}
+              conditionData={conditionData}
+            />
+          ) : (
+            <Stack>
+              <Center>
+                <Image src={"/src/assets/tryAdding.svg"} />
+              </Center>
+              <Center>Add some items to the room to get going.</Center>
+            </Stack>
+          )}
           <Settings
             opened={opened}
             close={close}
