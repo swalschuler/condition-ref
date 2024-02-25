@@ -28,18 +28,20 @@ const ConditionList = ({
       <Card key={cond.name} shadow="sm" padding="sm" radius="sm" withBorder>
         <Group justify="space-between" mt="sm" mb="xs">
           <Text fw={500}>{capitalizeFirstLetter(cond.name)}</Text>
-          <ActionIcon
-            component="a"
-            href={cond.url}
-            target="_blank"
-            aria-label="Open in a new tab"
-            variant="default"
-          >
-            <IconExternalLink
-              style={{ width: "70%", height: "70%" }}
-              stroke={1.5}
-            />
-          </ActionIcon>
+          {cond.url && (
+            <ActionIcon
+              component="a"
+              href={cond.url}
+              target="_blank"
+              aria-label="Open in a new tab"
+              variant="default"
+            >
+              <IconExternalLink
+                style={{ width: "70%", height: "70%" }}
+                stroke={1.5}
+              />
+            </ActionIcon>
+          )}
         </Group>
         {effects}
       </Card>

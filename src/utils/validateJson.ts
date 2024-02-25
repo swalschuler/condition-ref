@@ -12,9 +12,12 @@ export default function validateJson(
 
   try {
     const obj = deserialize(value);
+
+    // Return false if just not valid schema
     return inputSchemaValidator(obj);
   } catch (e) {
-    return false;
+    // Return undefined if bad JSON
+    return undefined;
   }
 }
 

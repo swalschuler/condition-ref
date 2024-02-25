@@ -102,7 +102,7 @@ function App() {
             />
           </Flex>
         </AppShell.Header>
-        <AppShell.Main>
+        <AppShell.Main mih={"100%"}>
           <ConditionList
             displayedConditions={conditions}
             conditionData={conditionData}

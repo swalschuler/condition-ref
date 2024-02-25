@@ -47,7 +47,19 @@ const Settings = ({
   };
 
   const isButtonEnabled = () => {
-    return isJsonValid && jsonValue !== oldJson;
+    return !!isJsonValid && jsonValue !== oldJson;
+  };
+
+  const getJsonWarning = () => {
+    if (isJsonValid === false) {
+      return "Check the shape of your JSON.";
+    }
+
+    if (isJsonValid === undefined) {
+      return "Invalid JSON.";
+    }
+    // Other cases are handled by inbuilt JsonInput validation.
+    return "";
   };
 
   return (
@@ -99,12 +111,12 @@ const Settings = ({
           scene.
           <JsonInput
             placeholder="{ ... }"
-            validationError="Invalid JSON"
             formatOnBlur
             autosize
             minRows={4}
             value={jsonValue}
             onChange={setJsonValue}
+            error={getJsonWarning()}
           />
           <Group justify="flex-end" mt="md">
             <Button
