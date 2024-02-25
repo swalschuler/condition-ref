@@ -54,7 +54,14 @@ export const parseMetaData = (
     ...(checkedConditionMarkers && CONDITION_ATTACHMENTS_MARKERS),
   };
 
-  const json = JSON.parse(jsonString || "[]") as InputJson;
+  let json: InputJson;
+
+  try {
+    // User defined JSON is dangerous :O
+    json = JSON.parse(jsonString || "[]") as InputJson;
+  } catch (e) {
+    json = JSON.parse("[]");
+  }
 
   json.map((entry) => {
     const dataEntry = {

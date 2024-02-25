@@ -1,4 +1,4 @@
-import { Dispatch, SetStateAction } from "react";
+import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import {
   Drawer,
   Title,
@@ -12,9 +12,10 @@ import {
 import validateJson, { MetaData } from "../utils/validateJson";
 import OBR from "@owlbear-rodeo/sdk";
 import { METADATA_ID } from "../utils/constants";
+import { IconFile } from "@tabler/icons-react";
 
 const updateMetaData = (state: MetaData) => {
-  OBR.room.setMetadata({ [METADATA_ID]: { ...state } });
+  return OBR.room.setMetadata({ [METADATA_ID]: { ...state } });
 };
 
 const Settings = ({
@@ -34,12 +35,19 @@ const Settings = ({
   jsonValue: string;
   setJsonValue: Dispatch<SetStateAction<string>>;
 }) => {
+  const [oldJson, setOldJson] = useState("");
+  useEffect(() => setOldJson(jsonValue), [opened]);
+
   const isJsonValid = validateJson(jsonValue, JSON.parse);
 
   const state = {
     checkedRings,
     checkedConditionMarkers,
     json: jsonValue,
+  };
+
+  const isButtonEnabled = () => {
+    return isJsonValid && jsonValue !== oldJson;
   };
 
   return (
@@ -101,10 +109,14 @@ const Settings = ({
           <Group justify="flex-end" mt="md">
             <Button
               type="submit"
-              disabled={!isJsonValid}
-              onClick={() => updateMetaData(state)}
+              fullWidth
+              leftSection={<IconFile size={14} />}
+              disabled={!isButtonEnabled()}
+              onClick={() =>
+                updateMetaData(state).then(() => setOldJson(jsonValue))
+              }
             >
-              Save
+              Save JSON
             </Button>
           </Group>
         </Drawer.Body>
