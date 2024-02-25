@@ -18,14 +18,20 @@ export default function validateJson(
   }
 }
 
-export type InputData = {
+export type InputJson = {
   fileName: string;
   title: string;
   url?: string | undefined;
   conditionEffects: string[];
 };
 
-const schema: JSONSchemaType<InputData> = {
+export type MetaData = {
+  checkedRings: boolean;
+  checkedConditionMarkers: boolean;
+  json: string;
+};
+
+const schema: JSONSchemaType<InputJson> = {
   type: "object",
   properties: {
     fileName: {
@@ -49,15 +55,3 @@ const schema: JSONSchemaType<InputData> = {
 };
 
 const inputSchemaValidator = ajv.compile(schema);
-
-// const data = {
-//   foo: 1,
-//   bar: "abc",
-// };
-
-// if (validate(data)) {
-//   // data is MyData here
-//   console.log(data.foo);
-// } else {
-//   console.log(validate.errors);
-// }

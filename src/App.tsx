@@ -71,6 +71,7 @@ function App() {
       OBR.scene.items.onChange((items) =>
         updateConditions(items, setConditions)
       );
+      OBR.room.onMetadataChange((data) => console.log(data));
     }
   }, [sceneReady]);
 

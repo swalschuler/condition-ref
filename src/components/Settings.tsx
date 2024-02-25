@@ -9,7 +9,14 @@ import {
   Group,
   Button,
 } from "@mantine/core";
-import validateJson from "../utils/validateJson";
+import validateJson, { MetaData } from "../utils/validateJson";
+import OBR from "@owlbear-rodeo/sdk";
+
+const METADATA_ID = "net.upperatmosphere/metadata";
+
+const updateMetaData = (state: MetaData) => {
+  OBR.room.setMetadata({ [METADATA_ID]: { ...state } });
+};
 
 const Settings = ({
   opened,
@@ -23,6 +30,12 @@ const Settings = ({
   const [jsonValue, setJsonValue] = useState("");
 
   const isJsonValid = validateJson(jsonValue, JSON.parse);
+
+  const state = {
+    checkedRings,
+    checkedConditionMarkers,
+    json: jsonValue,
+  };
 
   return (
     <Drawer.Root
@@ -78,7 +91,11 @@ const Settings = ({
             onChange={setJsonValue}
           />
           <Group justify="flex-end" mt="md">
-            <Button type="submit" disabled={!isJsonValid}>
+            <Button
+              type="submit"
+              disabled={!isJsonValid}
+              onClick={() => updateMetaData(state)}
+            >
               Save
             </Button>
           </Group>
