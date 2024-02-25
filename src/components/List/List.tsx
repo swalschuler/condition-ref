@@ -1,6 +1,5 @@
 import { Stack, Text, Card, Group, Divider, ActionIcon } from "@mantine/core";
 import "./List.css";
-import conditionData from "../../utils/conditionData";
 import { IconExternalLink } from "@tabler/icons-react";
 
 function capitalizeFirstLetter(str: string) {

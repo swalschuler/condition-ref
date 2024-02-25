@@ -20,9 +20,13 @@ import {
 import Settings from "./components/Settings";
 import ConditionList from "./components/List/List";
 import { InputJson } from "./utils/validateJson";
-import CONDITION_DATA from "./utils/conditionData";
+import CONDITION_DATA, { ConditionDataSingleton } from "./utils/conditionData";
+import { METADATA_ID } from "./utils/constants";
 
 function App() {
+  const [ready, setReady] = useState(false); // Is OBR ready?
+  const [sceneReady, setSceneReady] = useState(false); // Is the OBR.scene ready?
+
   const [conditions, setConditions] = useState<string[]>([]);
   const [opened, { open, close }] = useDisclosure(false);
   const [checkedRings, setCheckedRings] = useState(false);
@@ -31,19 +35,17 @@ function App() {
   const [fileToNameMap, setFileToNameMap] = useState<{
     [key: string]: string;
   }>({});
-  const [conditionData, setConditionData] = useState<
-    { name: string; url: string; conditionEffects: string[] }[]
-  >([]);
+  const [conditionData, setConditionData] = useState<ConditionDataSingleton[]>(
+    []
+  );
   const [itemsLocal, setItemsLocal] = useState<Item[]>([]);
 
-  const [ready, setReady] = useState(false);
   useEffect(() => {
     OBR.onReady(() => {
       setReady(true);
     });
   }, []);
 
-  const [sceneReady, setSceneReady] = useState(false);
   useEffect(() => {
     if (ready) {
       OBR.scene.isReady().then((isReady) => {
@@ -56,8 +58,6 @@ function App() {
       OBR.room.onMetadataChange((data) => parseMetaData(data));
     }
   }, [ready]);
-
-  const METADATA_ID = "net.upperatmosphere/metadata";
 
   const parseMetaData = (data: Metadata) => {
     let fileToName: { [key: string]: string } = {}; // CONDITION_ATTACHMENT_NAMES;

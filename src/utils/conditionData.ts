@@ -1,8 +1,9 @@
-const CONDITION_DATA: {
+export type ConditionDataSingleton = {
   name: string;
   url: string;
   conditionEffects: string[];
-}[] = [
+};
+const CONDITION_DATA: ConditionDataSingleton[] = [
   {
     name: "blinded",
     url: "https://5thsrd.org/rules/conditions/#blinded",

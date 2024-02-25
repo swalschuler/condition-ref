@@ -11,8 +11,7 @@ import {
 } from "@mantine/core";
 import validateJson, { MetaData } from "../utils/validateJson";
 import OBR from "@owlbear-rodeo/sdk";
-
-const METADATA_ID = "net.upperatmosphere/metadata";
+import { METADATA_ID } from "../utils/constants";
 
 const updateMetaData = (state: MetaData) => {
   OBR.room.setMetadata({ [METADATA_ID]: { ...state } });
