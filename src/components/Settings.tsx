@@ -58,9 +58,7 @@ const Settings = ({
             borderBottom: "calc(0.0625rem*var(--mantine-scale)) solid #dee2e6",
           }}
         >
-          <Drawer.Title>
-            <Title order={3}>Settings</Title>
-          </Drawer.Title>
+          <Title order={3}>Settings</Title>
           <Drawer.CloseButton />
         </Drawer.Header>
         <Drawer.Body>

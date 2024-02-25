@@ -89,7 +89,7 @@ function App() {
             justify={"space-between"}
             style={{ width: "100%", height: "100%" }}
           >
-            <Title order={3}>5e Condition Reference</Title>
+            <Title order={3}>Token Text</Title>
             <CloseButton
               icon={
                 <IconSettings
