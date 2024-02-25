@@ -13,15 +13,10 @@ import {
 } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import { IconSettings } from "@tabler/icons-react";
-import {
-  CONDITION_ATTACHMENTS_MARKERS,
-  CONDITION_ATTACHMENTS_RINGS,
-} from "./utils/fileToConditionMapData";
 import Settings from "./components/Settings";
 import ConditionList from "./components/List/List";
-import { InputJson } from "./utils/validateJson";
-import CONDITION_DATA, { ConditionDataSingleton } from "./utils/conditionData";
-import { METADATA_ID } from "./utils/constants";
+import { ConditionDataSingleton } from "./utils/conditionData";
+import { parseMetaData, updateConditions } from "./utils/parsingHelpers";
 
 function App() {
   const [ready, setReady] = useState(false); // Is OBR ready?
@@ -54,81 +49,24 @@ function App() {
           setSceneReady(isReady);
         });
       });
-      OBR.room.getMetadata().then((data) => parseMetaData(data));
-      OBR.room.onMetadataChange((data) => parseMetaData(data));
+      const parse = (data: Metadata) =>
+        parseMetaData(
+          data,
+          setCheckedRings,
+          setCheckedConditionMarkers,
+          setJsonValue,
+          setFileToNameMap,
+          setConditionData
+        );
+      OBR.room.getMetadata().then(parse);
+      OBR.room.onMetadataChange(parse);
     }
   }, [ready]);
 
-  const parseMetaData = (data: Metadata) => {
-    let fileToName: { [key: string]: string } = {}; // CONDITION_ATTACHMENT_NAMES;
-    let fullConditionData: {
-      name: string;
-      url: string;
-      conditionEffects: string[];
-    }[] = [...CONDITION_DATA];
-
-    let checkedRings = true;
-    if (!!data[METADATA_ID]) {
-      checkedRings = !!(data[METADATA_ID] as any).checkedRings;
-    }
-
-    let checkedConditionMarkers = true;
-    if (!!data[METADATA_ID]) {
-      checkedConditionMarkers = !!(data[METADATA_ID] as any)
-        .checkedConditionMarkers;
-    }
-
-    let jsonString: string | undefined = undefined;
-    if (!!data[METADATA_ID]) {
-      jsonString = (data[METADATA_ID] as any).json;
-    }
-
-    setCheckedRings(checkedRings);
-    setCheckedConditionMarkers(checkedConditionMarkers);
-    setJsonValue(jsonString || "");
-
-    fileToName = {
-      ...fileToName,
-      ...(checkedRings && CONDITION_ATTACHMENTS_RINGS),
-      ...(checkedConditionMarkers && CONDITION_ATTACHMENTS_MARKERS),
-    };
-
-    const json = JSON.parse(jsonString || "[]") as InputJson;
-
-    json.map((entry) => {
-      const dataEntry = {
-        name: entry.title,
-        url: entry?.url || "",
-        conditionEffects: entry.conditionEffects,
-      };
-      fullConditionData.push(dataEntry);
-      fileToName[entry.fileName] = entry.title;
-    });
-
-    setFileToNameMap(fileToName);
-    setConditionData(fullConditionData);
-  };
-
-  const updateConditions = () => {
-    console.log("updating");
-
-    const usedConditions: string[] = [];
-
-    // Could maybe optimize by filtering as I go
-    for (const item of itemsLocal) {
-      if (fileToNameMap.hasOwnProperty(item.name.toLowerCase())) {
-        usedConditions.push(fileToNameMap[item.name.toLocaleLowerCase()]);
-      }
-    }
-
-    const uniqueConditions = usedConditions.filter(
-      (value, index, array) => array.indexOf(value) === index
-    );
-
-    setConditions(uniqueConditions);
-  };
-
-  useEffect(updateConditions, [itemsLocal, fileToNameMap]);
+  useEffect(
+    () => updateConditions(itemsLocal, fileToNameMap, setConditions),
+    [itemsLocal, fileToNameMap]
+  );
 
   useEffect(() => {
     if (sceneReady) {
@@ -141,7 +79,6 @@ function App() {
     }
   }, [sceneReady]);
 
-  console.log(fileToNameMap);
   return (
     <MantineProvider>
       <AppShell header={{ height: "40px" }}>
