@@ -14,7 +14,7 @@ learn-more: <a website link or email where users can find more>
 
 An Owlbear Rodeo extension for showing text when tokens are added to a scene.
 
-## 5e condition
+## 5e conditions
 
 By default, Token Text shows the 5e rules for conditions when Owlbear Rodeo's [Status Rings](https://docs.owlbear.rodeo/docs/getting-started/) or Keegan's [Condition Markers](https://extensions.owlbear.rodeo/condition-markers) are added to a scene.
 
