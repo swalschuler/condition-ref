@@ -5,7 +5,6 @@ const SaveChangesModal = ({
   discard,
   save,
   opened,
-  open,
   close,
 }: {
   discard: () => void;
