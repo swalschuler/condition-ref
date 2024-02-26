@@ -8,6 +8,7 @@ import {
   JsonInput,
   Group,
   Button,
+  Anchor,
 } from "@mantine/core";
 import validateJson, { MetaData } from "../utils/validateJson";
 import OBR from "@owlbear-rodeo/sdk";
@@ -110,7 +111,7 @@ const Settings = ({
             open={openModal}
             close={closeModal}
           />
-          <Title order={4}>5e Condition Markers.</Title>
+          <Title order={4}>5e conditions</Title>
           You can enable common condition markers here.
           <Group>
             <Checkbox
@@ -119,7 +120,12 @@ const Settings = ({
                 updateMetaData({ ...state, checkedRings: !checkedRings })
               }
             />
-            Default Rings
+            <Anchor
+              target="_blank"
+              href="https://docs.owlbear.rodeo/docs/getting-started/"
+            >
+              Default Rings
+            </Anchor>
           </Group>
           <Group>
             <Checkbox
@@ -131,10 +137,15 @@ const Settings = ({
                 })
               }
             />
-            Condition Markers
+            <Anchor
+              target="_blank"
+              href="https://extensions.owlbear.rodeo/condition-markers"
+            >
+              Condition Markers
+            </Anchor>
           </Group>
           <Divider my="md" />
-          <Title order={4}>Custom Token Text</Title>
+          <Title order={4}>Custom token text</Title>
           You can show any text you'd like when a given token is added to your
           scene.
           <JsonInput

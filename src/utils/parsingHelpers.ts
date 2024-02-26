@@ -88,8 +88,8 @@ export const updateConditions = (
 
   // Could maybe optimize by filtering as I go
   for (const item of itemsLocal) {
-    if (fileToNameMap.hasOwnProperty(item.name.toLowerCase())) {
-      usedConditions.push(fileToNameMap[item.name.toLocaleLowerCase()]);
+    if (fileToNameMap.hasOwnProperty(item.name)) {
+      usedConditions.push(fileToNameMap[item.name]);
     }
   }
 
