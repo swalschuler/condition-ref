@@ -20,6 +20,7 @@ import Settings from "./components/Settings";
 import ConditionList from "./components/List/List";
 import { ConditionDataSingleton } from "./utils/conditionData";
 import { parseMetaData, updateConditions } from "./utils/parsingHelpers";
+import tryAddingImgUrl from "/src/assets/tryAdding.svg";
 
 function App() {
   const [ready, setReady] = useState(false); // Is OBR ready?
@@ -114,7 +115,7 @@ function App() {
           ) : (
             <Stack>
               <Center>
-                <Image src={"/src/assets/tryAdding.svg"} />
+                <Image src={tryAddingImgUrl} />
               </Center>
               <Center>Add some items to the room to get going.</Center>
             </Stack>
