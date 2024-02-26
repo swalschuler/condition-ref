@@ -1,9 +1,9 @@
 {
-  "name": "5e Condition Reference",
+  "name": "Token Text",
   "version": "1.0.0",
   "manifest_version": 1,
   "action": {
-    "title": "5e Condition Reference",
+    "title": "Token Text",
     "icon": "/icon.svg",
     "popover": "/",
     "height": 600,

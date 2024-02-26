@@ -1,18 +1,17 @@
-import { Stack, Text, Card, Group, Divider, Space } from "@mantine/core";
-
+import { Stack, Text, Card, Group, Divider, ActionIcon } from "@mantine/core";
 import "./List.css";
-import ConditionName from "../../utils/conditionTypes";
-import conditionData from "../../utils/conditionData";
-import LinkCopyButton from "../LinkCopyButton";
+import { IconExternalLink } from "@tabler/icons-react";
 
 function capitalizeFirstLetter(str: string) {
   return str.charAt(0).toUpperCase() + str.slice(1);
 }
 
-const List = ({
+const ConditionList = ({
   displayedConditions,
+  conditionData,
 }: {
-  displayedConditions: ConditionName[];
+  displayedConditions: string[];
+  conditionData: { name: string; url: string; conditionEffects: string[] }[];
 }) => {
   const dataToShow = conditionData.filter((condition) =>
     displayedConditions.includes(condition.name)
@@ -29,7 +28,20 @@ const List = ({
       <Card key={cond.name} shadow="sm" padding="sm" radius="sm" withBorder>
         <Group justify="space-between" mt="sm" mb="xs">
           <Text fw={500}>{capitalizeFirstLetter(cond.name)}</Text>
-          <LinkCopyButton url={cond.url} />
+          {cond.url && (
+            <ActionIcon
+              component="a"
+              href={cond.url}
+              target="_blank"
+              aria-label="Open in a new tab"
+              variant="default"
+            >
+              <IconExternalLink
+                style={{ width: "70%", height: "70%" }}
+                stroke={1.5}
+              />
+            </ActionIcon>
+          )}
         </Group>
         {effects}
       </Card>
@@ -38,10 +50,9 @@ const List = ({
 
   return (
     <Stack gap={"sm"} bg="var(--mantine-color-body)" justify="flex-start">
-      <Space my="xs" />
       {cards}
     </Stack>
   );
 };
 
-export default List;
+export default ConditionList;

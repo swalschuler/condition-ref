@@ -1,10 +1,9 @@
-import ConditionName from "./conditionTypes";
-
-const conditionData: {
-  name: ConditionName;
+export type ConditionDataSingleton = {
+  name: string;
   url: string;
   conditionEffects: string[];
-}[] = [
+};
+const CONDITION_DATA: ConditionDataSingleton[] = [
   {
     name: "blinded",
     url: "https://5thsrd.org/rules/conditions/#blinded",
@@ -147,4 +146,4 @@ const conditionData: {
   },
 ];
 
-export default conditionData;
+export default CONDITION_DATA;
