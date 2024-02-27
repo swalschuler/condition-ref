@@ -2,11 +2,15 @@
   "name": "Token Text",
   "version": "1.0.0",
   "manifest_version": 1,
+  "author": "Schuyler",
+  "icon": "/icon.svg",
+  "description": "Display condition descriptions and other text when images are added to Owlbear.",
   "action": {
     "title": "Token Text",
     "icon": "/icon.svg",
     "popover": "/",
     "height": 600,
     "width": 400
-  }
+  },
+  "homepage_url": "https://github.com/swalschuler/condition-ref"
 }
