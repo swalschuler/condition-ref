@@ -27,7 +27,8 @@ export const CONDITION_ATTACHMENTS_MARKERS: { [key: string]: string } = {
   "Condition Marker - Exhausted": "exhaustion",
   "Condition Marker - Frightened": "frightened",
   "Condition Marker - Grappled": "grappled",
-  "Condition Marker - Incapacitated": "incapacitated",
+  "Condition Marker - Incapacitated": "incapacitated", // Including in case Condition Markers updates this typo
+  "Condition Marker - Incapaci-tated": "incapacitated",
   "Condition Marker - Invisible": "invisible",
   "Condition Marker - Paralyzed": "paralyzed",
   "Condition Marker - Petrified": "petrified",
@@ -35,7 +36,8 @@ export const CONDITION_ATTACHMENTS_MARKERS: { [key: string]: string } = {
   "Condition Marker - Prone": "prone",
   "Condition Marker - Restrained": "restrained",
   "Condition Marker - Stunned": "stunned",
-  "Condition Marker - Unconscious": "unconscious",
+  "Condition Marker - Unconscious": "unconscious", // Including in case Condition Markers updates this typo
+  "Condition Marker - Un-conscious": "unconscious",
 };
 
 const CONDITION_ATTACHMENT_NAMES = {
