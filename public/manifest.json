@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "manifest_version": 1,
   "author": "Schuyler",
-  "icon": "/icon.svg",
+  "icon": "/iconWhite.svg",
   "description": "Display condition descriptions and other text when images are added to Owlbear.",
   "action": {
     "title": "Token Text",
@@ -12,5 +12,5 @@
     "height": 600,
     "width": 400
   },
-  "homepage_url": "https://github.com/swalschuler/condition-ref"
+  "homepage_url": "https://github.com/swalschuler/condition-ref?tab=readme-ov-file#readme"
 }
