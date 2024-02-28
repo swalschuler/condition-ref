@@ -20,7 +20,7 @@ By default, Token Text shows the 5e rules for conditions when Owlbear Rodeo's [S
 
 If you are not using these features, you can disable them in the settings.
 
-![Demo of the builtin condition features.](/public/builtinDemo.gif)
+![Demo of the builtin condition features.](/src/assets/builtinDemo.gif)
 
 ## Custom token text
 
@@ -46,4 +46,4 @@ Here's an example where I define some text to show up whenever I add a custom im
 
 _You can't actually use comments in JSON, so you try and copy/paste the above JSON exactly, it won't work. Just delete any text after the `//`'s_
 
-![Demo of adding some custom token text.](/public/customTokenDemo.gif)
+![Demo of adding some custom token text.](/src/assets/customTokenDemo.gif)
