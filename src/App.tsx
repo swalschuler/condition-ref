@@ -13,8 +13,8 @@ import {
   Center,
   Image,
   Stack,
-  ActionIcon,
   Group,
+  ActionIcon,
 } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import { IconHelp, IconSettings } from "@tabler/icons-react";
@@ -97,7 +97,7 @@ function App() {
             style={{ width: "100%", height: "100%" }}
           >
             <Title order={3}>Token Text</Title>
-            <Group>
+            <ActionIcon.Group>
               <CloseButton
                 aria-label="Buy Me a Coffee"
                 component="a"
@@ -132,7 +132,7 @@ function App() {
                 }
                 onClick={open}
               />
-            </Group>
+            </ActionIcon.Group>
           </Flex>
         </AppShell.Header>
         <AppShell.Main mih={"100%"}>
