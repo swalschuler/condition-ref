@@ -13,14 +13,17 @@ import {
   Center,
   Image,
   Stack,
+  ActionIcon,
+  Group,
 } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
-import { IconSettings } from "@tabler/icons-react";
+import { IconHelp, IconSettings } from "@tabler/icons-react";
 import Settings from "./components/Settings";
 import ConditionList from "./components/List/List";
 import { ConditionDataSingleton } from "./utils/conditionData";
 import { parseMetaData, updateConditions } from "./utils/parsingHelpers";
 import tryAddingImgUrl from "/src/assets/tryAdding.svg";
+import buyMeACoffeeURL from "/src/assets/bmc-logo.png";
 
 function App() {
   const [ready, setReady] = useState(false); // Is OBR ready?
@@ -94,16 +97,42 @@ function App() {
             style={{ width: "100%", height: "100%" }}
           >
             <Title order={3}>Token Text</Title>
-            <CloseButton
-              icon={
-                <IconSettings
-                  style={{ width: "70%", height: "70%" }}
-                  stroke={1.5}
-                />
-              }
-              aria-label="Settings"
-              onClick={open}
-            />
+            <Group>
+              <CloseButton
+                aria-label="Buy Me a Coffee"
+                component="a"
+                href="https://www.buymeacoffee.com/upperatmosphere"
+                target="_blank"
+                icon={
+                  <Image
+                    style={{ width: "50%", height: "50%" }}
+                    src={buyMeACoffeeURL}
+                  />
+                }
+              />
+              <CloseButton
+                aria-label="Help"
+                component="a"
+                href="https://github.com/swalschuler/condition-ref?tab=readme-ov-file#readme"
+                target="_blank"
+                icon={
+                  <IconHelp
+                    style={{ width: "70%", height: "70%" }}
+                    stroke={1.5}
+                  />
+                }
+              />
+              <CloseButton
+                aria-label="Settings"
+                icon={
+                  <IconSettings
+                    style={{ width: "70%", height: "70%" }}
+                    stroke={1.5}
+                  />
+                }
+                onClick={open}
+              />
+            </Group>
           </Flex>
         </AppShell.Header>
         <AppShell.Main mih={"100%"}>
