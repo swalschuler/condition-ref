@@ -13,7 +13,6 @@ import {
   Center,
   Image,
   Stack,
-  Group,
   ActionIcon,
 } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
