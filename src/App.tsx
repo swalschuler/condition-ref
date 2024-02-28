@@ -27,6 +27,7 @@ import buyMeACoffeeURL from "/src/assets/bmc-logo.png";
 function App() {
   const [ready, setReady] = useState(false); // Is OBR ready?
   const [sceneReady, setSceneReady] = useState(false); // Is the OBR.scene ready?
+  const [isGM, setIsGM] = useState(false);
 
   const [conditions, setConditions] = useState<string[]>([]);
   const [opened, { open, close }] = useDisclosure(false);
@@ -49,6 +50,7 @@ function App() {
 
   useEffect(() => {
     if (ready) {
+      OBR.player.getRole().then((role) => setIsGM(role === "GM"));
       OBR.scene.isReady().then((isReady) => {
         setSceneReady(isReady);
         OBR.scene.onReadyChange((isReady) => {
@@ -121,16 +123,18 @@ function App() {
                   />
                 }
               />
-              <CloseButton
-                aria-label="Settings"
-                icon={
-                  <IconSettings
-                    style={{ width: "70%", height: "70%" }}
-                    stroke={1.5}
-                  />
-                }
-                onClick={open}
-              />
+              {isGM && (
+                <CloseButton
+                  aria-label="Settings"
+                  icon={
+                    <IconSettings
+                      style={{ width: "70%", height: "70%" }}
+                      stroke={1.5}
+                    />
+                  }
+                  onClick={open}
+                />
+              )}
             </ActionIcon.Group>
           </Flex>
         </AppShell.Header>
