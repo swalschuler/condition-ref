@@ -2,12 +2,12 @@
 title: Token Text
 description: Display condition descriptions and other text when images are added to Owlbear.
 author: Schuyler
-image: <your extension's hero image>
-icon: <your extension's icon>
+image: https://raw.githubusercontent.com/swalschuler/condition-ref/main/src/assets/header.png
+icon: https://raw.githubusercontent.com/swalschuler/condition-ref/main/public/iconWhite.svg
 tags:
   - tool
-manifest: <a link to your extension's manifest file>
-learn-more: <a website link or email where users can find more>
+manifest: https://raw.githubusercontent.com/swalschuler/condition-ref/main/public/icon.svg
+learn-more: https://github.com/swalschuler/condition-ref?tab=readme-ov-file#readme
 ---
 
 # Token Text
@@ -44,6 +44,10 @@ Here's an example where I define some text to show up whenever I add a custom im
 ]
 ```
 
-_You can't actually use comments in JSON, so you try and copy/paste the above JSON exactly, it won't work. Just delete any text after the `//`'s_
+_You can't actually use comments in JSON, so if you try and copy/paste the above JSON exactly, it won't work. Just delete any text after the `//`'s_
 
 ![Demo of adding some custom token text.](/src/assets/customTokenDemo.gif)
+
+### Attribution
+
+This work includes material taken from the System Reference Document 5.1 (“SRD 5.1”) by Wizards of the Coast LLC and available at https://dnd.wizards.com/resources/systems-reference-document. The SRD 5.1 is licensed under the Creative Commons Attribution 4.0 International License available at https://creativecommons.org/licenses/by/4.0/legalcode.
