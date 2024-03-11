@@ -6,7 +6,7 @@ image: https://raw.githubusercontent.com/swalschuler/condition-ref/main/src/asse
 icon: https://raw.githubusercontent.com/swalschuler/condition-ref/main/public/iconWhite.svg
 tags:
   - tool
-manifest: https://raw.githubusercontent.com/swalschuler/condition-ref/main/public/manifest.json
+manifest: https://condition-ref.onrender.com/manifest.json
 learn-more: https://github.com/swalschuler/condition-ref?tab=readme-ov-file#readme
 ---
 
