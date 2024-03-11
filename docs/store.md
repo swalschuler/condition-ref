@@ -1,3 +1,15 @@
+---
+title: Token Text
+description: Display condition descriptions and other text when images are added to Owlbear.
+author: Schuyler
+image: https://raw.githubusercontent.com/swalschuler/condition-ref/main/src/assets/header.png
+icon: https://raw.githubusercontent.com/swalschuler/condition-ref/main/public/iconWhite.svg
+tags:
+  - tool
+manifest: https://condition-ref.onrender.com/manifest.json
+learn-more: https://github.com/swalschuler/condition-ref?tab=readme-ov-file#readme
+---
+
 # Token Text
 
 An Owlbear Rodeo extension for showing text when tokens are added to a scene.
