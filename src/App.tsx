@@ -1,8 +1,6 @@
 import { useEffect, useState } from "react";
-import "./App.css";
 import OBR, { Item, Metadata } from "@owlbear-rodeo/sdk";
 import "./index.css";
-import "./App.css";
 import "@mantine/core/styles.css";
 import {
   Flex,
@@ -18,7 +16,7 @@ import {
 import { useDisclosure } from "@mantine/hooks";
 import { IconHelp, IconSettings } from "@tabler/icons-react";
 import Settings from "./components/Settings";
-import ConditionList from "./components/List/List";
+import ConditionList from "./components/List";
 import { ConditionDataSingleton } from "./utils/conditionData";
 import { parseMetaData, updateConditions } from "./utils/parsingHelpers";
 import tryAddingImgUrl from "/src/assets/tryAdding.svg";
@@ -84,6 +82,8 @@ function App() {
       OBR.scene.items.onChange((items) => {
         setItemsLocal(items);
       });
+    } else {
+      setItemsLocal([]); // Clear out any conditions that were showing when the scene was open.
     }
   }, [sceneReady]);
 
@@ -149,7 +149,7 @@ function App() {
               <Center>
                 <Image src={tryAddingImgUrl} />
               </Center>
-              <Center>Add some items to the room to get going.</Center>
+              <Center>Add some items to the scene to get going.</Center>
             </Stack>
           )}
           <Settings
