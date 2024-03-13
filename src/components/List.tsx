@@ -12,6 +12,8 @@ const ConditionList = ({
   displayedConditions: string[];
   conditionData: { name: string; url: string; conditionEffects: string[] }[];
 }) => {
+  console.log("DATA!");
+  console.log(conditionData);
   const dataToShow = conditionData.filter((condition) =>
     displayedConditions.includes(condition.name)
   );

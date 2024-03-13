@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import OBR, { Item, Metadata } from "@owlbear-rodeo/sdk";
+import OBR from "@owlbear-rodeo/sdk";
 import "./index.css";
 import "@mantine/core/styles.css";
 import {
@@ -17,27 +17,25 @@ import { useDisclosure } from "@mantine/hooks";
 import { IconHelp, IconSettings } from "@tabler/icons-react";
 import Settings from "./components/Settings";
 import ConditionList from "./components/List";
-import { ConditionDataSingleton } from "./utils/conditionData";
-import { parseMetaData, updateConditions } from "./utils/parsingHelpers";
 import tryAddingImgUrl from "/src/assets/tryAdding.svg";
 import buyMeACoffeeURL from "/src/assets/bmc-logo.png";
+import useAppState from "./state/store";
 
 function App() {
+  const [opened, { open, close }] = useDisclosure(false);
+
   const [ready, setReady] = useState(false); // Is OBR ready?
   const [sceneReady, setSceneReady] = useState(false); // Is the OBR.scene ready?
   const [isGM, setIsGM] = useState(false);
 
-  const [conditions, setConditions] = useState<string[]>([]);
-  const [opened, { open, close }] = useDisclosure(false);
-  const [checkedRings, setCheckedRings] = useState(false);
-  const [checkedConditionMarkers, setCheckedConditionMarkers] = useState(false);
-  const [jsonValue, setJsonValue] = useState("");
-  const [fileToNameMap, setFileToNameMap] = useState<{
-    [key: string]: string;
-  }>({});
-  const [conditionData, setConditionData] = useState<ConditionDataSingleton[]>(
-    []
-  );
+  // This will rerender when any state (even those not listed here) changes.
+  const {
+    conditions,
+    fileToNameMap,
+    conditionData,
+    parseMetaData,
+    updateConditions,
+  } = useAppState();
 
   useEffect(() => {
     OBR.onReady(() => {
@@ -54,32 +52,27 @@ function App() {
           setSceneReady(isReady);
         });
       });
-      const parse = (data: Metadata) =>
-        parseMetaData(
-          data,
-          setCheckedRings,
-          setCheckedConditionMarkers,
-          setJsonValue,
-          setFileToNameMap,
-          setConditionData
-        );
-      OBR.room.getMetadata().then(parse);
-      OBR.room.onMetadataChange(parse);
+
+      // const parse = (data: Metadata) => parseMetaData(data);
+      OBR.room.getMetadata().then((data) => parseMetaData(data));
+      OBR.room.onMetadataChange((data) => parseMetaData(data));
     }
   }, [ready]);
 
   useEffect(() => {
     if (sceneReady) {
       OBR.scene.items.getItems().then((items) => {
-        updateConditions(items, fileToNameMap, setConditions);
+        updateConditions(items);
       });
       OBR.scene.items.onChange((items) => {
-        updateConditions(items, fileToNameMap, setConditions);
+        updateConditions(items);
       });
     } else {
-      updateConditions([], fileToNameMap, setConditions); // Clear out any conditions that were showing when the scene was open.
+      updateConditions([]); // Clear out any conditions that were showing when the scene was open.
     }
   }, [sceneReady]);
+
+  useEffect(() => updateConditions(items), [itemsLocal, fileToNameMap]);
 
   return (
     <MantineProvider>
@@ -146,16 +139,7 @@ function App() {
               <Center>Add some items to the scene to get going.</Center>
             </Stack>
           )}
-          <Settings
-            opened={opened}
-            close={close}
-            checkedRings={checkedRings}
-            setCheckedRings={setCheckedRings}
-            checkedConditionMarkers={checkedConditionMarkers}
-            setCheckedConditionMarkers={setCheckedConditionMarkers}
-            jsonValue={jsonValue}
-            setJsonValue={setJsonValue}
-          />
+          <Settings opened={opened} close={close} />
         </AppShell.Main>
       </AppShell>
     </MantineProvider>

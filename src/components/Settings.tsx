@@ -16,6 +16,7 @@ import { METADATA_ID } from "../utils/constants";
 import { IconDeviceFloppy } from "@tabler/icons-react";
 import SaveChangesModal from "./SaveChangesModal";
 import { useDisclosure } from "@mantine/hooks";
+import useAppState from "../state/store";
 
 const updateMetaData = (state: MetaData) => {
   return OBR.room.setMetadata({ [METADATA_ID]: { ...state } });
@@ -24,20 +25,16 @@ const updateMetaData = (state: MetaData) => {
 const Settings = ({
   opened,
   close,
-  checkedRings,
-  checkedConditionMarkers,
-  jsonValue,
-  setJsonValue,
 }: {
   opened: boolean;
   close: () => void;
-  checkedRings: boolean;
-  setCheckedRings: Dispatch<SetStateAction<boolean>>;
-  checkedConditionMarkers: boolean;
-  setCheckedConditionMarkers: Dispatch<SetStateAction<boolean>>;
-  jsonValue: string;
-  setJsonValue: Dispatch<SetStateAction<string>>;
 }) => {
+  const jsonValue = useAppState((state) => state.jsonValue);
+  const checkedRings = useAppState((state) => state.checkedRings);
+  const checkedConditionMarkers = useAppState(
+    (state) => state.checkedConditionMarkers
+  );
+
   const [oldJson, setOldJson] = useState("");
   const [modalOpened, { open: openModal, close: closeModal }] =
     useDisclosure(false);
@@ -96,7 +93,7 @@ const Settings = ({
         <Drawer.Body>
           <SaveChangesModal
             discard={() => {
-              setJsonValue(oldJson);
+              useAppState.setState({ jsonValue: oldJson });
               close();
             }}
             save={
@@ -154,7 +151,7 @@ const Settings = ({
             autosize
             minRows={4}
             value={jsonValue}
-            onChange={setJsonValue}
+            onChange={(val) => useAppState.setState({ jsonValue: val })}
             error={getJsonWarning()}
           />
           <Group justify="flex-end" mt="md">
