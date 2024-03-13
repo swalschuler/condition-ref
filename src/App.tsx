@@ -38,7 +38,6 @@ function App() {
   const [conditionData, setConditionData] = useState<ConditionDataSingleton[]>(
     []
   );
-  const [itemsLocal, setItemsLocal] = useState<Item[]>([]);
 
   useEffect(() => {
     OBR.onReady(() => {
@@ -69,21 +68,16 @@ function App() {
     }
   }, [ready]);
 
-  useEffect(
-    () => updateConditions(itemsLocal, fileToNameMap, setConditions),
-    [itemsLocal, fileToNameMap]
-  );
-
   useEffect(() => {
     if (sceneReady) {
       OBR.scene.items.getItems().then((items) => {
-        setItemsLocal(items);
+        updateConditions(items, fileToNameMap, setConditions);
       });
       OBR.scene.items.onChange((items) => {
-        setItemsLocal(items);
+        updateConditions(items, fileToNameMap, setConditions);
       });
     } else {
-      setItemsLocal([]); // Clear out any conditions that were showing when the scene was open.
+      updateConditions([], fileToNameMap, setConditions); // Clear out any conditions that were showing when the scene was open.
     }
   }, [sceneReady]);
 
