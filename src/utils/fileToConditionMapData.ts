@@ -17,6 +17,7 @@ export const CONDITION_ATTACHMENTS_RINGS: { [key: string]: string } = {
   Restrained: "restrained",
   Stunned: "stunned",
   Unconscious: "unconscious",
+  Concentration: "Losing Concentration",
 };
 
 // File names for Condition Markers extension
@@ -38,6 +39,8 @@ export const CONDITION_ATTACHMENTS_MARKERS: { [key: string]: string } = {
   "Condition Marker - Stunned": "stunned",
   "Condition Marker - Unconscious": "unconscious", // Including in case Condition Markers updates this typo
   "Condition Marker - Un-conscious": "unconscious",
+  "Condition Marker - Concen-trating": "Losing Concentration", // Including in case Condition Markers updates this typo
+  "Condition Marker - Concentrating": "Losing Concentration",
 };
 
 const CONDITION_ATTACHMENT_NAMES = {
