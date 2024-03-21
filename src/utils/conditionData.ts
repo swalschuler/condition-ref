@@ -144,6 +144,16 @@ const CONDITION_DATA: ConditionDataSingleton[] = [
       "Attacks that hit you are critical if the attacker is within 5 feet of you.",
     ],
   },
+  {
+    name: "Losing Concentration",
+    url: "",
+    conditionEffects: [
+      "Cast another spell that requires concentration.",
+      "Take damage: Make a Constitution saving throw of DC 10, or DC = half the damage taken if higher.",
+      "Being incapacitated or killed.",
+      "Things in the environment might require a DC 10 Constitution saving throw at GM's discretion.",
+    ],
+  },
 ];
 
 export default CONDITION_DATA;
