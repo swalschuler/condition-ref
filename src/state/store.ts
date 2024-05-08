@@ -8,6 +8,7 @@ import {
   CONDITION_ATTACHMENTS_MARKERS,
   CONDITION_ATTACHMENTS_RINGS,
 } from "../utils/fileToConditionMapData";
+import { SettingsData } from "../components/Settings";
 
 type AppState = {
   checkedRings: boolean;
@@ -18,11 +19,7 @@ type AppState = {
   };
   conditionData: ConditionDataSingleton[];
   localItems: Item[];
-  setSettingsState: (state: {
-    checkedRings: boolean;
-    checkedConditionMarkers: boolean;
-    jsonString: string;
-  }) => void;
+  setSettingsState: (state: SettingsData) => void;
 };
 
 const useAppState = create<AppState>()(

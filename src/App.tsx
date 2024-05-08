@@ -14,13 +14,14 @@ import {
   ActionIcon,
 } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
-import { IconHelp, IconSettings } from "@tabler/icons-react";
-import Settings from "./components/Settings";
+import { IconShare3, IconHelp, IconSettings } from "@tabler/icons-react";
+import Settings, { SettingsData } from "./components/Settings";
 import ConditionList from "./components/List";
 import tryAddingImgUrl from "/src/assets/tryAdding.svg";
 import buyMeACoffeeURL from "/src/assets/bmc-logo.png";
 import useAppState from "./state/store";
 import { getUniqueConditions } from "./utils/parsingHelpers";
+import { broadcastState } from "./utils";
 
 function App() {
   const [opened, { open, close }] = useDisclosure(false);
@@ -35,7 +36,15 @@ function App() {
    * Future optimization:
    * Store only meaningful pieces of localItems (i.e. names) to prevent extra renders.
    */
-  const { conditionData, localItems, fileToNameMap } = useAppState();
+  const {
+    conditionData,
+    localItems,
+    fileToNameMap,
+    checkedRings,
+    checkedConditionMarkers,
+    jsonValue,
+    setSettingsState,
+  } = useAppState();
 
   useEffect(() => {
     OBR.onReady(() => {
@@ -52,6 +61,9 @@ function App() {
           setSceneReady(isReady);
         });
       });
+      OBR.broadcast.onMessage("net.upperatmosphere.tokentext", (d) =>
+        setSettingsState(d.data as SettingsData)
+      );
     }
   }, [ready]);
 
@@ -108,16 +120,40 @@ function App() {
                 }
               />
               {isGM && (
-                <CloseButton
-                  aria-label="Settings"
-                  icon={
-                    <IconSettings
-                      style={{ width: "70%", height: "70%" }}
-                      stroke={1.5}
-                    />
-                  }
-                  onClick={open}
-                />
+                <>
+                  <CloseButton
+                    aria-label="Share With Players"
+                    icon={
+                      <IconShare3
+                        style={{ width: "70%", height: "70%" }}
+                        stroke={1.5}
+                      />
+                    }
+                    onClick={() => {
+                      try {
+                        broadcastState({
+                          checkedRings,
+                          checkedConditionMarkers,
+                          jsonString: JSON.stringify(JSON.parse(jsonValue)), // Lazy way to remove unnecessary white space while broadcasting
+                        });
+                      } catch (e) {
+                        // Users shouldn't be able to reach this state (since malformed JSON should never be saved to state)
+                        // But... just in case.
+                        alert("Unable to share your data.");
+                      }
+                    }}
+                  />
+                  <CloseButton
+                    aria-label="Settings"
+                    icon={
+                      <IconSettings
+                        style={{ width: "70%", height: "70%" }}
+                        stroke={1.5}
+                      />
+                    }
+                    onClick={open}
+                  />
+                </>
               )}
             </ActionIcon.Group>
           </Flex>

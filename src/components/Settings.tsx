@@ -16,6 +16,12 @@ import SaveChangesModal from "./SaveChangesModal";
 import { useDisclosure } from "@mantine/hooks";
 import useAppState from "../state/store";
 
+export type SettingsData = {
+  checkedRings: boolean;
+  checkedConditionMarkers: boolean;
+  jsonString: string;
+};
+
 const Settings = ({
   opened,
   close,
