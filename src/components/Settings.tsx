@@ -91,8 +91,6 @@ const Settings = ({
           <SaveChangesModal
             discard={() => {
               setSettingsState({ ...state, jsonString: oldJson });
-              // useAppState.setState({ jsonValue: oldJson });
-              // useAppState().parseMetaData();
               close();
             }}
             save={
