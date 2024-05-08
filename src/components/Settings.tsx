@@ -32,22 +32,28 @@ const Settings = ({
   const { jsonValue, checkedRings, checkedConditionMarkers, setSettingsState } =
     useAppState();
 
+  // Use local state until ready to commit to localStorage.
   const [oldJson, setOldJson] = useState("");
+  const [newJson, setNewJson] = useState("");
+
   const [modalOpened, { open: openModal, close: closeModal }] =
     useDisclosure(false);
 
-  useEffect(() => setOldJson(jsonValue), [opened]);
+  useEffect(() => {
+    setOldJson(jsonValue);
+    setNewJson(jsonValue);
+  }, [opened]);
 
-  const isJsonValid = validateJson(jsonValue, JSON.parse);
+  const isJsonValid = validateJson(newJson, JSON.parse);
 
   const state = {
     checkedRings,
     checkedConditionMarkers,
-    jsonString: jsonValue,
+    jsonString: newJson,
   };
 
   const isButtonEnabled = () => {
-    return !!isJsonValid && jsonValue !== oldJson;
+    return !!isJsonValid && newJson !== oldJson;
   };
 
   const getJsonWarning = () => {
@@ -66,7 +72,7 @@ const Settings = ({
     <Drawer.Root
       opened={opened}
       onClose={() => {
-        if (jsonValue !== oldJson) {
+        if (newJson !== oldJson) {
           openModal();
           return;
         }
@@ -147,8 +153,8 @@ const Settings = ({
             formatOnBlur
             autosize
             minRows={4}
-            value={jsonValue}
-            onChange={(val) => useAppState.setState({ jsonValue: val })}
+            value={newJson}
+            onChange={(val) => setNewJson(val)}
             error={getJsonWarning()}
           />
           <Group justify="flex-end" mt="md">
@@ -158,8 +164,9 @@ const Settings = ({
               leftSection={<IconDeviceFloppy size={14} />}
               disabled={!isButtonEnabled()}
               onClick={() => {
+                console.log("CLICK");
                 setSettingsState(state);
-                setOldJson(jsonValue);
+                setOldJson(newJson);
               }}
             >
               Save JSON
