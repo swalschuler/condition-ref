@@ -24,9 +24,7 @@ export const getUniqueConditions = (
 
 export const broadcastState = (state: SettingsData) => {
   OBR.broadcast
-    .sendMessage("net.upperatmosphere.tokentext", state, {
-      destination: "ALL",
-    })
+    .sendMessage("net.upperatmosphere.tokentext", state)
     .catch((_e) =>
       alert(
         "Unable to share your token text. Try reducing the size of your JSON."

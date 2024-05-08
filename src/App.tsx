@@ -12,6 +12,7 @@ import {
   Image,
   Stack,
   ActionIcon,
+  Tooltip,
 } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import { IconShare3, IconHelp, IconSettings } from "@tabler/icons-react";
@@ -120,28 +121,30 @@ function App() {
               />
               {isGM && (
                 <>
-                  <CloseButton
-                    aria-label="Share With Players"
-                    icon={
-                      <IconShare3
-                        style={{ width: "70%", height: "70%" }}
-                        stroke={1.5}
-                      />
-                    }
-                    onClick={() => {
-                      try {
-                        broadcastState({
-                          checkedRings,
-                          checkedConditionMarkers,
-                          jsonString: JSON.stringify(JSON.parse(jsonValue)), // Lazy way to remove unnecessary white space while broadcasting
-                        });
-                      } catch (e) {
-                        // Users shouldn't be able to reach this state (since malformed JSON should never be saved to state)
-                        // But... just in case.
-                        alert("Unable to share your data.");
+                  <Tooltip label="Share your token text with players.">
+                    <CloseButton
+                      aria-label="Share With Players"
+                      icon={
+                        <IconShare3
+                          style={{ width: "70%", height: "70%" }}
+                          stroke={1.5}
+                        />
                       }
-                    }}
-                  />
+                      onClick={() => {
+                        try {
+                          broadcastState({
+                            checkedRings,
+                            checkedConditionMarkers,
+                            jsonString: JSON.stringify(JSON.parse(jsonValue)), // Lazy way to remove unnecessary white space while broadcasting
+                          });
+                        } catch (e) {
+                          // Users shouldn't be able to reach this state (since malformed JSON should never be saved to state)
+                          // But... just in case.
+                          alert("Unable to share your data.");
+                        }
+                      }}
+                    />
+                  </Tooltip>
                   <CloseButton
                     aria-label="Settings"
                     icon={
