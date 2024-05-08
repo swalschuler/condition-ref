@@ -20,6 +20,7 @@ import ConditionList from "./components/List";
 import tryAddingImgUrl from "/src/assets/tryAdding.svg";
 import buyMeACoffeeURL from "/src/assets/bmc-logo.png";
 import useAppState from "./state/store";
+import { getUniqueConditions } from "./utils/parsingHelpers";
 
 function App() {
   const [opened, { open, close }] = useDisclosure(false);
@@ -28,14 +29,14 @@ function App() {
   const [sceneReady, setSceneReady] = useState(false); // Is the OBR.scene ready?
   const [isGM, setIsGM] = useState(false);
 
-  // This will rerender when any state (even those not listed here) changes.
-  const {
-    conditions,
-    fileToNameMap,
-    conditionData,
-    parseMetaData,
-    updateConditions,
-  } = useAppState();
+  /**
+   * This will rerender when any state (even those not listed here) changes.
+   * That means we redo a lot of work whenever tokens are moved around.
+   * Future optimization:
+   * Store only meaningful pieces of localItems (i.e. names) to prevent extra renders.
+   */
+  const { conditionData, localItems, fileToNameMap, parseMetaData } =
+    useAppState();
 
   useEffect(() => {
     OBR.onReady(() => {
@@ -52,27 +53,24 @@ function App() {
           setSceneReady(isReady);
         });
       });
-
-      // const parse = (data: Metadata) => parseMetaData(data);
-      OBR.room.getMetadata().then((data) => parseMetaData(data));
-      OBR.room.onMetadataChange((data) => parseMetaData(data));
+      parseMetaData();
     }
   }, [ready]);
 
   useEffect(() => {
     if (sceneReady) {
-      OBR.scene.items.getItems().then((items) => {
-        updateConditions(items);
-      });
-      OBR.scene.items.onChange((items) => {
-        updateConditions(items);
-      });
+      OBR.scene.items
+        .getItems()
+        .then((items) => useAppState.setState({ localItems: items }));
+      OBR.scene.items.onChange((items) =>
+        useAppState.setState({ localItems: items })
+      );
     } else {
-      updateConditions([]); // Clear out any conditions that were showing when the scene was open.
+      useAppState.setState({ localItems: [] }); // Clear out any conditions that were showing when the scene was open.
     }
   }, [sceneReady]);
 
-  useEffect(() => updateConditions(items), [itemsLocal, fileToNameMap]);
+  const conditions = getUniqueConditions(localItems, fileToNameMap);
 
   return (
     <MantineProvider>

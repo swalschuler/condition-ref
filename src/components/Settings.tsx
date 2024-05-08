@@ -1,4 +1,4 @@
-import { Dispatch, SetStateAction, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import {
   Drawer,
   Title,
@@ -10,17 +10,11 @@ import {
   Button,
   Anchor,
 } from "@mantine/core";
-import validateJson, { MetaData } from "../utils/validateJson";
-import OBR from "@owlbear-rodeo/sdk";
-import { METADATA_ID } from "../utils/constants";
+import validateJson from "../utils/validateJson";
 import { IconDeviceFloppy } from "@tabler/icons-react";
 import SaveChangesModal from "./SaveChangesModal";
 import { useDisclosure } from "@mantine/hooks";
 import useAppState from "../state/store";
-
-const updateMetaData = (state: MetaData) => {
-  return OBR.room.setMetadata({ [METADATA_ID]: { ...state } });
-};
 
 const Settings = ({
   opened,
@@ -29,11 +23,8 @@ const Settings = ({
   opened: boolean;
   close: () => void;
 }) => {
-  const jsonValue = useAppState((state) => state.jsonValue);
-  const checkedRings = useAppState((state) => state.checkedRings);
-  const checkedConditionMarkers = useAppState(
-    (state) => state.checkedConditionMarkers
-  );
+  const { jsonValue, checkedRings, checkedConditionMarkers, setSettingsState } =
+    useAppState();
 
   const [oldJson, setOldJson] = useState("");
   const [modalOpened, { open: openModal, close: closeModal }] =
@@ -46,7 +37,7 @@ const Settings = ({
   const state = {
     checkedRings,
     checkedConditionMarkers,
-    json: jsonValue,
+    jsonString: jsonValue,
   };
 
   const isButtonEnabled = () => {
@@ -93,13 +84,15 @@ const Settings = ({
         <Drawer.Body>
           <SaveChangesModal
             discard={() => {
-              useAppState.setState({ jsonValue: oldJson });
+              setSettingsState({ ...state, jsonString: oldJson });
+              // useAppState.setState({ jsonValue: oldJson });
+              // useAppState().parseMetaData();
               close();
             }}
             save={
               isButtonEnabled()
                 ? () => {
-                    updateMetaData(state).then(() => setOldJson(jsonValue));
+                    setSettingsState(state);
                     close();
                   }
                 : undefined
@@ -114,7 +107,7 @@ const Settings = ({
             <Checkbox
               checked={checkedRings}
               onChange={() =>
-                updateMetaData({ ...state, checkedRings: !checkedRings })
+                setSettingsState({ ...state, checkedRings: !checkedRings })
               }
             />
             <Anchor
@@ -128,7 +121,7 @@ const Settings = ({
             <Checkbox
               checked={checkedConditionMarkers}
               onChange={() =>
-                updateMetaData({
+                setSettingsState({
                   ...state,
                   checkedConditionMarkers: !checkedConditionMarkers,
                 })
@@ -160,9 +153,10 @@ const Settings = ({
               fullWidth
               leftSection={<IconDeviceFloppy size={14} />}
               disabled={!isButtonEnabled()}
-              onClick={() =>
-                updateMetaData(state).then(() => setOldJson(jsonValue))
-              }
+              onClick={() => {
+                setSettingsState(state);
+                setOldJson(jsonValue);
+              }}
             >
               Save JSON
             </Button>

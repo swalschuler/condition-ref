@@ -77,12 +77,11 @@ export const parseMetaData = (
   setConditionData(fullConditionData);
 };
 
-export const updateConditions = (
+export const getUniqueConditions = (
   itemsLocal: Item[],
   fileToNameMap: {
     [key: string]: string;
-  },
-  setConditions: React.Dispatch<React.SetStateAction<string[]>>
+  }
 ) => {
   const usedConditions: string[] = [];
 
@@ -96,6 +95,5 @@ export const updateConditions = (
   const uniqueConditions = usedConditions.filter(
     (value, index, array) => array.indexOf(value) === index
   );
-
-  setConditions(uniqueConditions);
+  return uniqueConditions;
 };

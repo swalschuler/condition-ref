@@ -1,8 +1,7 @@
 import { create } from "zustand";
 import { produce } from "immer";
 import CONDITION_DATA, { ConditionDataSingleton } from "../utils/conditionData";
-import { Item, Metadata } from "@owlbear-rodeo/sdk";
-import { METADATA_ID } from "../utils/constants";
+import { Item } from "@owlbear-rodeo/sdk";
 import { InputJson } from "../utils/validateJson";
 import {
   CONDITION_ATTACHMENTS_MARKERS,
@@ -18,7 +17,13 @@ type AppState = {
     [key: string]: string;
   };
   conditionData: ConditionDataSingleton[];
-  parseMetaData: (data: Metadata) => void;
+  localItems: Item[];
+  parseMetaData: () => void;
+  setSettingsState: (state: {
+    checkedRings: boolean;
+    checkedConditionMarkers: boolean;
+    jsonString: string;
+  }) => void;
   updateConditions: (itemsLocal: Item[]) => void;
 };
 
@@ -29,7 +34,10 @@ const useAppState = create<AppState>()((set, get) => ({
   jsonValue: "",
   fileToNameMap: {},
   conditionData: [],
-  parseMetaData: (data) => {
+  localItems: [],
+  parseMetaData: () => {
+    // Need to call this whenever checkboxes/json is updated.
+
     let fileToName: { [key: string]: string } = {}; // CONDITION_ATTACHMENT_NAMES;
     let fullConditionData: {
       name: string;
@@ -38,20 +46,20 @@ const useAppState = create<AppState>()((set, get) => ({
     }[] = [...CONDITION_DATA];
 
     let checkedRings = true;
-    if (!!data[METADATA_ID]) {
-      checkedRings = !!(data[METADATA_ID] as any).checkedRings;
-    }
+    // if (!!data[METADATA_ID]) {
+    //   checkedRings = !!(data[METADATA_ID] as any).checkedRings;
+    // }
 
     let checkedConditionMarkers = true;
-    if (!!data[METADATA_ID]) {
-      checkedConditionMarkers = !!(data[METADATA_ID] as any)
-        .checkedConditionMarkers;
-    }
+    // if (!!data[METADATA_ID]) {
+    //   checkedConditionMarkers = !!(data[METADATA_ID] as any)
+    //     .checkedConditionMarkers;
+    // }
 
     let jsonString: string | undefined = undefined;
-    if (!!data[METADATA_ID]) {
-      jsonString = (data[METADATA_ID] as any).json;
-    }
+    // if (!!data[METADATA_ID]) {
+    //   jsonString = (data[METADATA_ID] as any).json;
+    // }
 
     fileToName = {
       ...fileToName,
@@ -87,12 +95,51 @@ const useAppState = create<AppState>()((set, get) => ({
         state.jsonValue = jsonString || "";
         state.fileToNameMap = fileToName;
         state.conditionData = fullConditionData;
-        // ...state,
-        // checkedRings,
-        // checkedConditionMarkers,
-        // jsonValue: jsonString || "",
-        // fileToNameMap: fileToName,
-        // conditionData: fullConditionData,
+      })
+    );
+  },
+  setSettingsState: (state) => {
+    const { checkedRings, checkedConditionMarkers, jsonString } = state;
+
+    let fileToName: { [key: string]: string } = {}; // CONDITION_ATTACHMENT_NAMES;
+    let fullConditionData: {
+      name: string;
+      url: string;
+      conditionEffects: string[];
+    }[] = [...CONDITION_DATA];
+
+    fileToName = {
+      ...fileToName,
+      ...(checkedRings && CONDITION_ATTACHMENTS_RINGS),
+      ...(checkedConditionMarkers && CONDITION_ATTACHMENTS_MARKERS),
+    };
+
+    let json: InputJson;
+
+    try {
+      // User defined JSON is dangerous :O
+      json = JSON.parse(jsonString || "[]") as InputJson;
+    } catch (e) {
+      json = JSON.parse("[]");
+    }
+
+    json.map((entry) => {
+      const dataEntry = {
+        name: entry.title,
+        url: entry?.url || "",
+        conditionEffects: entry.conditionEffects,
+      };
+      fullConditionData.push(dataEntry);
+      fileToName[entry.fileName] = entry.title;
+    });
+
+    return set(
+      produce((state) => {
+        state.checkedRings = checkedRings;
+        state.checkedConditionMarkers = checkedConditionMarkers;
+        state.jsonValue = jsonString;
+        state.fileToNameMap = fileToName;
+        state.conditionData = fullConditionData;
       })
     );
   },
