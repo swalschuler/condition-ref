@@ -16,15 +16,21 @@ const ConditionList = ({
     displayedConditions.includes(condition.name)
   );
 
-  const cards = dataToShow.map((cond) => {
-    const effects = cond.conditionEffects.map((effect, i) => (
-      <div key={`${cond.name}-${i}`}>
+  const cards = dataToShow.map((cond, i) => {
+    const effects = cond.conditionEffects.map((effect, j) => (
+      <div key={`${cond.name}-${j}`}>
         <Text size="sm">{effect}</Text>
-        {i < cond.conditionEffects.length - 1 ? <Divider my="sm" /> : null}
+        {j < cond.conditionEffects.length - 1 ? <Divider my="sm" /> : null}
       </div>
     ));
     return (
-      <Card key={cond.name} shadow="sm" padding="sm" radius="sm" withBorder>
+      <Card
+        key={`${cond.name}-${i}-card`}
+        shadow="sm"
+        padding="sm"
+        radius="sm"
+        withBorder
+      >
         <Group justify="space-between" mt="sm" mb="xs">
           <Text fw={500}>{capitalizeFirstLetter(cond.name)}</Text>
           {cond.url && (
