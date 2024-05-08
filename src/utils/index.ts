@@ -8,7 +8,7 @@ export const broadcastState = (state: SettingsData) => {
     })
     .catch((_e) =>
       alert(
-        "Couldn't share your token text. Try reducing the size of your JSON."
+        "Unable to share your token text. Try reducing the size of your JSON."
       )
     );
 };
