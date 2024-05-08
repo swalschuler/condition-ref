@@ -20,8 +20,7 @@ import ConditionList from "./components/List";
 import tryAddingImgUrl from "/src/assets/tryAdding.svg";
 import buyMeACoffeeURL from "/src/assets/bmc-logo.png";
 import useAppState from "./state/store";
-import { getUniqueConditions } from "./utils/parsingHelpers";
-import { broadcastState } from "./utils";
+import { broadcastState, getUniqueConditions } from "./utils";
 
 function App() {
   const [opened, { open, close }] = useDisclosure(false);
