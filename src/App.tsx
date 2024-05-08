@@ -35,8 +35,7 @@ function App() {
    * Future optimization:
    * Store only meaningful pieces of localItems (i.e. names) to prevent extra renders.
    */
-  const { conditionData, localItems, fileToNameMap, parseMetaData } =
-    useAppState();
+  const { conditionData, localItems, fileToNameMap } = useAppState();
 
   useEffect(() => {
     OBR.onReady(() => {
@@ -53,7 +52,6 @@ function App() {
           setSceneReady(isReady);
         });
       });
-      parseMetaData();
     }
   }, [ready]);
 
@@ -66,7 +64,8 @@ function App() {
         useAppState.setState({ localItems: items })
       );
     } else {
-      useAppState.setState({ localItems: [] }); // Clear out any conditions that were showing when the scene was open.
+      // Clear out any conditions that were showing when the scene was open.
+      useAppState.setState({ localItems: [] });
     }
   }, [sceneReady]);
 
