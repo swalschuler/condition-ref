@@ -1,4 +1,5 @@
 import OBR, { Item } from "@owlbear-rodeo/sdk";
+import { notifications } from "@mantine/notifications";
 import { SettingsData } from "../components/Settings";
 import CONDITION_DATA from "./conditionData";
 import {
@@ -68,12 +69,33 @@ export const getConditionData = (
   return { fileToNameMap: fileToName, conditionData: fullConditionData };
 };
 
+export const showErrorNotification = (title: string, message?: string) => {
+  notifications.show({
+    title,
+    message,
+    withBorder: true,
+    color: "red",
+  });
+};
+
+export const showSuccessNotification = (title: string, message?: string) => {
+  notifications.show({
+    title,
+    message,
+    withBorder: true,
+    color: "green",
+  });
+};
+
 export const broadcastState = (state: SettingsData) => {
   OBR.broadcast
     .sendMessage("net.upperatmosphere.tokentext", state)
-    .catch((_e) =>
-      alert(
-        "Unable to share your token text. Try reducing the size of your JSON."
-      )
-    );
+    .then(() => showSuccessNotification("Shared your token text with players."))
+    .catch((e) => {
+      console.log(e);
+      showErrorNotification(
+        "Unable to share your token text.",
+        "Try reducing the size of your JSON."
+      );
+    });
 };

@@ -15,13 +15,20 @@ import {
   Tooltip,
 } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
+import { Notifications } from "@mantine/notifications";
 import { IconShare3, IconHelp, IconSettings } from "@tabler/icons-react";
 import Settings, { SettingsData } from "./components/Settings";
 import ConditionList from "./components/List";
 import tryAddingImgUrl from "/src/assets/tryAdding.svg";
 import buyMeACoffeeURL from "/src/assets/bmc-logo.png";
 import useAppState from "./state/store";
-import { broadcastState, getConditionData, getUniqueConditions } from "./utils";
+import {
+  broadcastState,
+  getConditionData,
+  getUniqueConditions,
+  showErrorNotification,
+} from "./utils";
+import { Button } from "@mantine/core";
 
 function App() {
   const [opened, { open, close }] = useDisclosure(false);
@@ -83,6 +90,7 @@ function App() {
 
   return (
     <MantineProvider>
+      <Notifications />
       <AppShell header={{ height: "40px" }}>
         <AppShell.Header px={"md"}>
           <Flex
@@ -141,7 +149,8 @@ function App() {
                         } catch (e) {
                           // Users shouldn't be able to reach this state (since malformed JSON should never be saved to state)
                           // But... just in case.
-                          alert("Unable to share your data.");
+                          console.error(e);
+                          showErrorNotification("Unable to share your data.");
                         }
                       }}
                     />
