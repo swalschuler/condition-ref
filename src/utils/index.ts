@@ -75,6 +75,7 @@ export const showErrorNotification = (title: string, message?: string) => {
     message,
     withBorder: true,
     color: "red",
+    autoClose: 3000,
   });
 };
 
@@ -84,6 +85,7 @@ export const showSuccessNotification = (title: string, message?: string) => {
     message,
     withBorder: true,
     color: "green",
+    autoClose: 3000,
   });
 };
 
