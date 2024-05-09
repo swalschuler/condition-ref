@@ -28,7 +28,6 @@ import {
   getUniqueConditions,
   showErrorNotification,
 } from "./utils";
-import { Button } from "@mantine/core";
 
 function App() {
   const [opened, { open, close }] = useDisclosure(false);
