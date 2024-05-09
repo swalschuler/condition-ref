@@ -21,7 +21,7 @@ import ConditionList from "./components/List";
 import tryAddingImgUrl from "/src/assets/tryAdding.svg";
 import buyMeACoffeeURL from "/src/assets/bmc-logo.png";
 import useAppState from "./state/store";
-import { broadcastState, getUniqueConditions } from "./utils";
+import { broadcastState, getConditionData, getUniqueConditions } from "./utils";
 
 function App() {
   const [opened, { open, close }] = useDisclosure(false);
@@ -36,15 +36,8 @@ function App() {
    * Future optimization:
    * Store only meaningful pieces of localItems (i.e. names) to prevent extra renders.
    */
-  const {
-    conditionData,
-    localItems,
-    fileToNameMap,
-    checkedRings,
-    checkedConditionMarkers,
-    jsonValue,
-    setSettingsState,
-  } = useAppState();
+  const { localItems, checkedRings, checkedConditionMarkers, jsonValue } =
+    useAppState();
 
   useEffect(() => {
     OBR.onReady(() => {
@@ -62,7 +55,7 @@ function App() {
         });
       });
       OBR.broadcast.onMessage("net.upperatmosphere.tokentext", (d) =>
-        setSettingsState(d.data as SettingsData)
+        useAppState.setState(d.data as SettingsData)
       );
     }
   }, [ready]);
@@ -81,6 +74,11 @@ function App() {
     }
   }, [sceneReady]);
 
+  const { fileToNameMap, conditionData } = getConditionData(
+    checkedRings,
+    checkedConditionMarkers,
+    jsonValue
+  );
   const conditions = getUniqueConditions(localItems, fileToNameMap);
 
   return (
@@ -135,7 +133,7 @@ function App() {
                           broadcastState({
                             checkedRings,
                             checkedConditionMarkers,
-                            jsonString: JSON.stringify(JSON.parse(jsonValue)), // Lazy way to remove unnecessary white space while broadcasting
+                            jsonValue: JSON.stringify(JSON.parse(jsonValue)), // Lazy way to remove unnecessary white space while broadcasting
                           });
                         } catch (e) {
                           // Users shouldn't be able to reach this state (since malformed JSON should never be saved to state)

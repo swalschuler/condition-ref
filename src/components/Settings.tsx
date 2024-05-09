@@ -19,7 +19,7 @@ import useAppState from "../state/store";
 export type SettingsData = {
   checkedRings: boolean;
   checkedConditionMarkers: boolean;
-  jsonString: string;
+  jsonValue: string;
 };
 
 const Settings = ({
@@ -29,8 +29,7 @@ const Settings = ({
   opened: boolean;
   close: () => void;
 }) => {
-  const { jsonValue, checkedRings, checkedConditionMarkers, setSettingsState } =
-    useAppState();
+  const { jsonValue, checkedRings, checkedConditionMarkers } = useAppState();
 
   // Use local state until ready to commit to localStorage.
   const [oldJson, setOldJson] = useState("");
@@ -49,7 +48,7 @@ const Settings = ({
   const state = {
     checkedRings,
     checkedConditionMarkers,
-    jsonString: newJson,
+    jsonValue: newJson,
   };
 
   const isButtonEnabled = () => {
@@ -96,13 +95,13 @@ const Settings = ({
         <Drawer.Body>
           <SaveChangesModal
             discard={() => {
-              setSettingsState({ ...state, jsonString: oldJson });
+              useAppState.setState({ jsonValue: oldJson });
               close();
             }}
             save={
               isButtonEnabled()
                 ? () => {
-                    setSettingsState(state);
+                    useAppState.setState(state);
                     close();
                   }
                 : undefined
@@ -117,7 +116,7 @@ const Settings = ({
             <Checkbox
               checked={checkedRings}
               onChange={() =>
-                setSettingsState({ ...state, checkedRings: !checkedRings })
+                useAppState.setState({ checkedRings: !checkedRings })
               }
             />
             <Anchor
@@ -131,8 +130,7 @@ const Settings = ({
             <Checkbox
               checked={checkedConditionMarkers}
               onChange={() =>
-                setSettingsState({
-                  ...state,
+                useAppState.setState({
                   checkedConditionMarkers: !checkedConditionMarkers,
                 })
               }
@@ -164,8 +162,7 @@ const Settings = ({
               leftSection={<IconDeviceFloppy size={14} />}
               disabled={!isButtonEnabled()}
               onClick={() => {
-                console.log("CLICK");
-                setSettingsState(state);
+                useAppState.setState(state);
                 setOldJson(newJson);
               }}
             >

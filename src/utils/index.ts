@@ -1,5 +1,11 @@
 import OBR, { Item } from "@owlbear-rodeo/sdk";
 import { SettingsData } from "../components/Settings";
+import CONDITION_DATA from "./conditionData";
+import {
+  CONDITION_ATTACHMENTS_MARKERS,
+  CONDITION_ATTACHMENTS_RINGS,
+} from "./fileToConditionMapData";
+import { InputJson } from "./validateJson";
 
 export const getUniqueConditions = (
   itemsLocal: Item[],
@@ -20,6 +26,46 @@ export const getUniqueConditions = (
     (value, index, array) => array.indexOf(value) === index
   );
   return uniqueConditions;
+};
+
+export const getConditionData = (
+  checkedRings: boolean,
+  checkedConditionMarkers: boolean,
+  jsonString: string
+) => {
+  let fileToName: { [key: string]: string } = {}; // CONDITION_ATTACHMENT_NAMES;
+  let fullConditionData: {
+    name: string;
+    url: string;
+    conditionEffects: string[];
+  }[] = [...CONDITION_DATA];
+
+  fileToName = {
+    ...fileToName,
+    ...(checkedRings && CONDITION_ATTACHMENTS_RINGS),
+    ...(checkedConditionMarkers && CONDITION_ATTACHMENTS_MARKERS),
+  };
+
+  let json: InputJson;
+
+  try {
+    // User defined JSON is dangerous :O
+    json = JSON.parse(jsonString || "[]") as InputJson;
+  } catch (e) {
+    json = JSON.parse("[]");
+  }
+
+  json.map((entry) => {
+    const dataEntry = {
+      name: entry.title,
+      url: entry?.url || "",
+      conditionEffects: entry.conditionEffects,
+    };
+    fullConditionData.push(dataEntry);
+    fileToName[entry.fileName] = entry.title;
+  });
+
+  return { fileToNameMap: fileToName, conditionData: fullConditionData };
 };
 
 export const broadcastState = (state: SettingsData) => {
