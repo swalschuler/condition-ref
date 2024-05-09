@@ -133,7 +133,10 @@ function App() {
                           broadcastState({
                             checkedRings,
                             checkedConditionMarkers,
-                            jsonValue: JSON.stringify(JSON.parse(jsonValue)), // Lazy way to remove unnecessary white space while broadcasting
+                            jsonValue:
+                              jsonValue == ""
+                                ? ""
+                                : JSON.stringify(JSON.parse(jsonValue)), // Lazy way to remove unnecessary white space while broadcasting
                           });
                         } catch (e) {
                           // Users shouldn't be able to reach this state (since malformed JSON should never be saved to state)
