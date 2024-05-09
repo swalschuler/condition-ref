@@ -78,7 +78,7 @@ const useAppState = create<AppState>()(
       },
     }),
     {
-      name: "test-storage",
+      name: "net-upperatmosphere-tokentext",
       storage: createJSONStorage(() => localStorage),
       partialize: (state) => ({
         // Omitting localItems
