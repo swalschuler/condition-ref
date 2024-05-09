@@ -40,7 +40,7 @@ _You can't actually use comments in JSON, so if you try and copy/paste the above
 
 You can share your settings and custom token text with players by clicking the share button. Players need to be in your Owlbear Rodeo room to get updates.
 
-![Demo of adding some custom token text.](./src/assets/shareInstructions.png)
+![Demo of adding some custom token text.](https://raw.githubusercontent.com/swalschuler/condition-ref/main/src/assets/shareInstructions.png)
 
 ### Attribution
 
