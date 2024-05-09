@@ -28,12 +28,6 @@ export type InputJson = {
   conditionEffects: string[];
 }[];
 
-export type MetaData = {
-  checkedRings: boolean;
-  checkedConditionMarkers: boolean;
-  json: string;
-};
-
 const schema: JSONSchemaType<InputJson> = {
   type: "array",
   items: {

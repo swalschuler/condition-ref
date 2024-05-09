@@ -1,4 +1,4 @@
-import { Dispatch, SetStateAction, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import {
   Drawer,
   Title,
@@ -10,50 +10,49 @@ import {
   Button,
   Anchor,
 } from "@mantine/core";
-import validateJson, { MetaData } from "../utils/validateJson";
-import OBR from "@owlbear-rodeo/sdk";
-import { METADATA_ID } from "../utils/constants";
+import validateJson from "../utils/validateJson";
 import { IconDeviceFloppy } from "@tabler/icons-react";
 import SaveChangesModal from "./SaveChangesModal";
 import { useDisclosure } from "@mantine/hooks";
+import useAppState from "../state/store";
 
-const updateMetaData = (state: MetaData) => {
-  return OBR.room.setMetadata({ [METADATA_ID]: { ...state } });
+export type SettingsData = {
+  checkedRings: boolean;
+  checkedConditionMarkers: boolean;
+  jsonValue: string;
 };
 
 const Settings = ({
   opened,
   close,
-  checkedRings,
-  checkedConditionMarkers,
-  jsonValue,
-  setJsonValue,
 }: {
   opened: boolean;
   close: () => void;
-  checkedRings: boolean;
-  setCheckedRings: Dispatch<SetStateAction<boolean>>;
-  checkedConditionMarkers: boolean;
-  setCheckedConditionMarkers: Dispatch<SetStateAction<boolean>>;
-  jsonValue: string;
-  setJsonValue: Dispatch<SetStateAction<string>>;
 }) => {
+  const { jsonValue, checkedRings, checkedConditionMarkers } = useAppState();
+
+  // Use local state until ready to commit to localStorage.
   const [oldJson, setOldJson] = useState("");
+  const [newJson, setNewJson] = useState("");
+
   const [modalOpened, { open: openModal, close: closeModal }] =
     useDisclosure(false);
 
-  useEffect(() => setOldJson(jsonValue), [opened]);
+  useEffect(() => {
+    setOldJson(jsonValue);
+    setNewJson(jsonValue);
+  }, [opened]);
 
-  const isJsonValid = validateJson(jsonValue, JSON.parse);
+  const isJsonValid = validateJson(newJson, JSON.parse);
 
   const state = {
     checkedRings,
     checkedConditionMarkers,
-    json: jsonValue,
+    jsonValue: newJson,
   };
 
   const isButtonEnabled = () => {
-    return !!isJsonValid && jsonValue !== oldJson;
+    return !!isJsonValid && newJson !== oldJson;
   };
 
   const getJsonWarning = () => {
@@ -72,7 +71,7 @@ const Settings = ({
     <Drawer.Root
       opened={opened}
       onClose={() => {
-        if (jsonValue !== oldJson) {
+        if (newJson !== oldJson) {
           openModal();
           return;
         }
@@ -96,13 +95,13 @@ const Settings = ({
         <Drawer.Body>
           <SaveChangesModal
             discard={() => {
-              setJsonValue(oldJson);
+              useAppState.setState({ jsonValue: oldJson });
               close();
             }}
             save={
               isButtonEnabled()
                 ? () => {
-                    updateMetaData(state).then(() => setOldJson(jsonValue));
+                    useAppState.setState(state);
                     close();
                   }
                 : undefined
@@ -117,7 +116,7 @@ const Settings = ({
             <Checkbox
               checked={checkedRings}
               onChange={() =>
-                updateMetaData({ ...state, checkedRings: !checkedRings })
+                useAppState.setState({ checkedRings: !checkedRings })
               }
             />
             <Anchor
@@ -131,8 +130,7 @@ const Settings = ({
             <Checkbox
               checked={checkedConditionMarkers}
               onChange={() =>
-                updateMetaData({
-                  ...state,
+                useAppState.setState({
                   checkedConditionMarkers: !checkedConditionMarkers,
                 })
               }
@@ -153,8 +151,8 @@ const Settings = ({
             formatOnBlur
             autosize
             minRows={4}
-            value={jsonValue}
-            onChange={setJsonValue}
+            value={newJson}
+            onChange={(val) => setNewJson(val)}
             error={getJsonWarning()}
           />
           <Group justify="flex-end" mt="md">
@@ -163,9 +161,10 @@ const Settings = ({
               fullWidth
               leftSection={<IconDeviceFloppy size={14} />}
               disabled={!isButtonEnabled()}
-              onClick={() =>
-                updateMetaData(state).then(() => setOldJson(jsonValue))
-              }
+              onClick={() => {
+                useAppState.setState(state);
+                setOldJson(newJson);
+              }}
             >
               Save JSON
             </Button>
